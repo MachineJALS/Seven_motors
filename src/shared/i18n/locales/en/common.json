@@ -1,0 +1,65 @@
+{
+  "header": {
+    "cta": "Message us",
+    "ctaMessage": "Hi, I'd like more information about your vehicles."
+  },
+  "footer": {
+    "rights": "© {{year}} {{name}} · {{city}}",
+    "privacyNotice": "Privacy notice"
+  },
+  "catalog": {
+    "heroTitle": "Trustworthy cars, ready for you",
+    "heroSubtitle": "Browse the full inventory, filter by what you're looking for, and message us directly on WhatsApp about the car you're interested in.",
+    "metaCount": "{{count}} of {{total}} vehicles",
+    "empty": "No vehicles match those filters."
+  },
+  "filters": {
+    "brand": "Brand",
+    "allBrands": "All",
+    "maxPrice": "Max price (USD)",
+    "maxPriceUnlimited": "No limit",
+    "yearFrom": "Year from",
+    "yearAny": "Any",
+    "fuelType": "Fuel type",
+    "allFuelTypes": "All",
+    "clear": "Clear filters"
+  },
+  "vehicleCard": {
+    "viewDetails": "View details →"
+  },
+  "detail": {
+    "back": "← Back to catalog",
+    "year": "Year",
+    "mileage": "Mileage",
+    "transmission": "Transmission",
+    "fuelType": "Fuel type",
+    "color": "Color",
+    "notFoundTitle": "Vehicle not found",
+    "notFoundText": "It may have already been sold, or the link may be incorrect.",
+    "inquiryMessage": "Hi, I'm interested in the {{brand}} {{model}} {{year}} (price ${{price}}) I saw on the website."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "backLink": "← Back to catalog"
+  },
+  "whatsapp": {
+    "write": "Message us on WhatsApp",
+    "sold": "Vehicle sold"
+  },
+  "enums": {
+    "fuelType": {
+      "gasoline": "Gasoline",
+      "diesel": "Diesel",
+      "hybrid": "Hybrid",
+      "electric": "Electric"
+    },
+    "transmission": {
+      "automatic": "Automatic",
+      "manual": "Manual"
+    }
+  },
+  "language": {
+    "es": "ES",
+    "en": "EN"
+  }
+}

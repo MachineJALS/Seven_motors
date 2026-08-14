@@ -1,0 +1,65 @@
+{
+  "header": {
+    "cta": "Escribinos",
+    "ctaMessage": "Hola, quisiera más información sobre sus vehículos."
+  },
+  "footer": {
+    "rights": "© {{year}} {{name}} · {{city}}",
+    "privacyNotice": "Aviso de privacidad"
+  },
+  "catalog": {
+    "heroTitle": "Carros de confianza, listos para vos",
+    "heroSubtitle": "Revisá el inventario completo, filtrá por lo que buscás y escribinos directo por WhatsApp por el auto que te interese.",
+    "metaCount": "{{count}} de {{total}} vehículos",
+    "empty": "No hay vehículos que coincidan con esos filtros."
+  },
+  "filters": {
+    "brand": "Marca",
+    "allBrands": "Todas",
+    "maxPrice": "Precio máximo (USD)",
+    "maxPriceUnlimited": "Sin límite",
+    "yearFrom": "Año desde",
+    "yearAny": "Cualquiera",
+    "fuelType": "Combustible",
+    "allFuelTypes": "Todos",
+    "clear": "Limpiar filtros"
+  },
+  "vehicleCard": {
+    "viewDetails": "Ver ficha →"
+  },
+  "detail": {
+    "back": "← Volver al catálogo",
+    "year": "Año",
+    "mileage": "Kilometraje",
+    "transmission": "Transmisión",
+    "fuelType": "Combustible",
+    "color": "Color",
+    "notFoundTitle": "Vehículo no encontrado",
+    "notFoundText": "Puede que ya se haya vendido o que el link esté mal escrito.",
+    "inquiryMessage": "Hola, me interesa el {{brand}} {{model}} {{year}} (precio ${{price}}) que vi en el sitio web."
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "backLink": "← Volver al catálogo"
+  },
+  "whatsapp": {
+    "write": "Escribir por WhatsApp",
+    "sold": "Vehículo vendido"
+  },
+  "enums": {
+    "fuelType": {
+      "gasoline": "Gasolina",
+      "diesel": "Diésel",
+      "hybrid": "Híbrido",
+      "electric": "Eléctrico"
+    },
+    "transmission": {
+      "automatic": "Automática",
+      "manual": "Manual"
+    }
+  },
+  "language": {
+    "es": "ES",
+    "en": "EN"
+  }
+}
