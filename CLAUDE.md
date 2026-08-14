@@ -9,7 +9,8 @@ is their catalog website: React 19 + Vite + TypeScript, statically built,
 deployed to Cloudflare Pages for $0 infrastructure cost. There is currently
 no backend — vehicle data is a hardcoded array. Full context: `docs/architecture.md`
 (target architecture) and `docs/audit-report.md` (state before this
-restructuring).
+restructuring). Branching model: `docs/git-workflow.md` (agreed, not yet in
+effect — only `main` and the current feature branch exist so far).
 
 **MVP scope**: catalog browsing, filtering, vehicle detail, and a WhatsApp
 inquiry channel. Payments, financing, and credit scoring are explicitly

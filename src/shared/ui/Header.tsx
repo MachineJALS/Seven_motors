@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { AGENCY, buildWhatsAppLink } from "@/shared/config/agency";
 import LanguageSwitcher from "@/shared/i18n/LanguageSwitcher";
 import { buildGeneralInquiryMessage } from "@/modules/leads/application/build-whatsapp-inquiry";
+import WhatsAppIcon from "@/modules/leads/presentation/components/WhatsAppIcon";
 
 export default function Header() {
   const { t } = useTranslation();
@@ -21,8 +22,10 @@ export default function Header() {
             href={buildWhatsAppLink(buildGeneralInquiryMessage(t))}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={t("header.cta")}
+            title={t("header.cta")}
           >
-            {t("header.cta")}
+            <WhatsAppIcon />
           </a>
         </div>
       </div>
