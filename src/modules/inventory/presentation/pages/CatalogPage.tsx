@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { vehicles } from "@/modules/inventory/infrastructure/static-vehicle-repository";
+import { useVehicles } from "@/modules/inventory/presentation/hooks/useVehicles";
 import VehicleCard from "@/modules/inventory/presentation/components/VehicleCard";
 import FilterBar from "@/modules/inventory/presentation/components/FilterBar";
 import {
@@ -14,21 +14,20 @@ import {
 export default function CatalogPage() {
   const { t } = useTranslation();
   const [filters, setFilters] = useState<VehicleFilters>(emptyFilters);
+  const { vehicles, loading, error } = useVehicles();
 
-  const brands = useMemo(() => listBrands(vehicles), []);
-  const fuelTypes = useMemo(() => listFuelTypes(vehicles), []);
-  const filteredVehicles = useMemo(() => filterVehicles(vehicles, filters), [filters]);
+  const brands = useMemo(() => listBrands(vehicles), [vehicles]);
+  const fuelTypes = useMemo(() => listFuelTypes(vehicles), [vehicles]);
+  const filteredVehicles = useMemo(() => filterVehicles(vehicles, filters), [vehicles, filters]);
 
-  return (
-    <>
-      <section className="hero">
-        <div className="wrap">
-          <h1 className="hero__title">{t("catalog.heroTitle")}</h1>
-          <p className="hero__subtitle">{t("catalog.heroSubtitle")}</p>
-        </div>
-      </section>
-
-      <div className="wrap">
+  let content: ReactNode;
+  if (loading) {
+    content = <p className="vacio">{t("status.loading")}</p>;
+  } else if (error) {
+    content = <p className="vacio">{t("status.error")}</p>;
+  } else {
+    content = (
+      <>
         <FilterBar filters={filters} brands={brands} fuelTypes={fuelTypes} onChange={setFilters} />
 
         <p className="catalogo-meta">
@@ -44,7 +43,20 @@ export default function CatalogPage() {
             ))}
           </div>
         )}
-      </div>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <section className="hero">
+        <div className="wrap">
+          <h1 className="hero__title">{t("catalog.heroTitle")}</h1>
+          <p className="hero__subtitle">{t("catalog.heroSubtitle")}</p>
+        </div>
+      </section>
+
+      <div className="wrap">{content}</div>
     </>
   );
 }

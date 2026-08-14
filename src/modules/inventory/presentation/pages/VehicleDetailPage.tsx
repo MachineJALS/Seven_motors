@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { vehicles } from "@/modules/inventory/infrastructure/static-vehicle-repository";
+import { useVehicle } from "@/modules/inventory/presentation/hooks/useVehicle";
 import PriceTag from "@/modules/inventory/presentation/components/PriceTag";
 import WhatsAppButton from "@/modules/leads/presentation/components/WhatsAppButton";
 import { buildVehicleInquiryMessage } from "@/modules/leads/application/build-whatsapp-inquiry";
@@ -11,15 +11,25 @@ import { numberLocale } from "@/shared/i18n/format";
 export default function VehicleDetailPage() {
   const { t, i18n } = useTranslation();
   const { id } = useParams<{ id: string }>();
-  const vehicle = vehicles.find((v) => v.id === id);
+  const { vehicle, error } = useVehicle(id);
   const [activePhoto, setActivePhoto] = useState(0);
-  const km = new Intl.NumberFormat(numberLocale(i18n.resolvedLanguage ?? "es"));
+  const numberFormatter = new Intl.NumberFormat(numberLocale(i18n.resolvedLanguage ?? "es"), {
+    maximumFractionDigits: 0,
+  });
 
-  if (!vehicle) {
+  if (vehicle === undefined) {
+    return (
+      <div className="wrap pagina-404">
+        <p>{t("status.loading")}</p>
+      </div>
+    );
+  }
+
+  if (vehicle === null || error) {
     return (
       <div className="wrap pagina-404">
         <h1>{t("detail.notFoundTitle")}</h1>
-        <p>{t("detail.notFoundText")}</p>
+        <p>{error ? t("status.error") : t("detail.notFoundText")}</p>
         <Link to="/">{t("detail.back")}</Link>
       </div>
     );
@@ -68,7 +78,7 @@ export default function VehicleDetailPage() {
               </tr>
               <tr>
                 <td>{t("detail.mileage")}</td>
-                <td>{km.format(vehicle.mileage)} km</td>
+                <td>{numberFormatter.format(vehicle.mileage)} km</td>
               </tr>
               <tr>
                 <td>{t("detail.transmission")}</td>
@@ -87,7 +97,10 @@ export default function VehicleDetailPage() {
 
           <p className="ficha__descripcion">{vehicle.description}</p>
 
-          <WhatsAppButton message={buildVehicleInquiryMessage(vehicle, t)} sold={vehicle.sold} />
+          <WhatsAppButton
+            message={buildVehicleInquiryMessage(vehicle, t, numberFormatter.format(vehicle.price))}
+            sold={vehicle.sold}
+          />
         </div>
       </div>
     </div>

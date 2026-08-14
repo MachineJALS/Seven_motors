@@ -1,4 +1,8 @@
 {
+  "status": {
+    "loading": "Cargando…",
+    "error": "No se pudo cargar la información. Intentá de nuevo más tarde."
+  },
   "header": {
     "cta": "Escribinos",
     "ctaMessage": "Hola, quisiera más información sobre sus vehículos."
@@ -16,7 +20,7 @@
   "filters": {
     "brand": "Marca",
     "allBrands": "Todas",
-    "maxPrice": "Precio máximo (USD)",
+    "maxPrice": "Precio máximo (₡)",
     "maxPriceUnlimited": "Sin límite",
     "yearFrom": "Año desde",
     "yearAny": "Cualquiera",
@@ -36,7 +40,7 @@
     "color": "Color",
     "notFoundTitle": "Vehículo no encontrado",
     "notFoundText": "Puede que ya se haya vendido o que el link esté mal escrito.",
-    "inquiryMessage": "Hola, me interesa el {{brand}} {{model}} {{year}} (precio ${{price}}) que vi en el sitio web."
+    "inquiryMessage": "Hola, me interesa el {{brand}} {{model}} {{year}} (precio ₡{{price}}) que vi en el sitio web."
   },
   "notFound": {
     "title": "Página no encontrada",
@@ -61,5 +65,50 @@
   "language": {
     "es": "ES",
     "en": "EN"
+  },
+  "admin": {
+    "login": {
+      "title": "Iniciar sesión",
+      "email": "Correo",
+      "password": "Contraseña",
+      "submit": "Entrar",
+      "submitting": "Entrando…",
+      "error": "Correo o contraseña incorrectos."
+    },
+    "nav": {
+      "title": "Panel de administración",
+      "signOut": "Cerrar sesión"
+    },
+    "list": {
+      "title": "Vehículos",
+      "addVehicle": "Agregar vehículo",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "confirmDelete": "¿Eliminar este vehículo? Esta acción no se puede deshacer.",
+      "markSold": "Marcar vendido",
+      "markAvailable": "Marcar disponible",
+      "empty": "Todavía no hay vehículos cargados.",
+      "sold": "Vendido"
+    },
+    "form": {
+      "titleNew": "Agregar vehículo",
+      "titleEdit": "Editar vehículo",
+      "brand": "Marca",
+      "model": "Modelo",
+      "year": "Año",
+      "price": "Precio (₡)",
+      "mileage": "Kilometraje (km)",
+      "fuelType": "Combustible",
+      "transmission": "Transmisión",
+      "color": "Color",
+      "description": "Descripción",
+      "photos": "Fotos (una URL por línea)",
+      "sold": "Vendido",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "saving": "Guardando…",
+      "error": "No se pudo guardar. Intentalo de nuevo.",
+      "required": "Este campo es obligatorio."
+    }
   }
 }

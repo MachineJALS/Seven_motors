@@ -62,46 +62,49 @@ old file actually had, not the 8 the README described.
 - [x] Git history exists from an honest baseline commit; work happened on a
       feature branch, not directly on `main`.
 
-## Phase 4 (future): Supabase backend, admin panel, lead persistence, quotes
+## Phase 4: Supabase backend, admin panel, lead persistence, quotes
 
-Not started — this section is the plan for when it is. Each item is
-additive within the existing module structure, which is the reason this
-restructuring was done first.
+4.1 and 4.2 are **done** (implemented per
+`.claude/specs/supabase-inventory-backend/spec.md` and
+`.claude/specs/admin-vehicle-management/spec.md`). 4.3 and 4.4 remain future
+work. Each item is additive within the existing module structure, which is
+the reason this restructuring was done first.
 
-### 4.1 Inventory: swap the static repository for Supabase
+### 4.1 Inventory: swap the static repository for Supabase — done
 
-- Add a Supabase project; create a `vehicles` table matching the `Vehicle`
-  domain type (see `.claude/specs/vehicle-inventory-management/spec.md`
-  "Data & API contracts").
-- Replace `static-vehicle-repository.ts`'s internals with a Supabase client
-  query, exposing the same shape consumers already use (or an async
-  `getVehicles()` — pick one and update the spec's contract section
-  accordingly before implementing).
-- **Risk**: data-migration correctness — the 4 existing vehicles (and their
-  currently-wrong prices, see audit finding #2) need to be entered
-  correctly, not copy-pasted with the same bug. **Mitigation**: the dealer
-  confirms real USD prices as part of data entry, not automated during
-  migration.
-- **Risk**: `CatalogPage`/`VehicleDetailPage` currently assume synchronous
-  data access. **Mitigation**: introduce loading/error states in the
-  presentation layer when this lands — a small, contained change because
-  `application/` functions already take a `Vehicle[]` as a plain argument
-  rather than reaching into infrastructure themselves.
+- `src/modules/inventory/infrastructure/supabase-vehicle-repository.ts`
+  replaced `static-vehicle-repository.ts` (deleted), exposing async
+  `getVehicles()`/`getVehicleById()` — the one contract change from the
+  original plan (sync export couldn't survive an async source), captured in
+  the spec.
+- The price-currency bug (audit finding #2) is resolved: all 4 vehicles
+  migrated with dealer-confirmed CRC prices (see the spec's "Data & currency
+  correction" section) via `supabase/migrations/0001_create_vehicles.sql`,
+  run by the project owner in the Supabase SQL editor.
+- `CatalogPage`/`VehicleDetailPage` gained loading/error states via
+  `useVehicles`/`useVehicle` hooks — the risk called out below was real and
+  handled as anticipated.
 
-### 4.2 Admin panel (`src/modules/admin`)
+### 4.2 Admin panel (`src/modules/admin`) — done, scoped down
 
-- Supabase Auth with `admin`/`vendedor` roles; Row Level Security policies
-  gating writes to the `vehicles` (and future `leads`) tables.
-- **Risk**: RLS policy gaps are a real data-exposure risk (e.g. a
-  `vendedor` role able to read other dealers' data if this ever becomes
-  multi-tenant, or leads visible without auth). **Mitigation**: write RLS
-  policies as part of the spec's acceptance criteria, not as an
-  afterthought — a spec is required before this module gets real code (see
-  `src/modules/admin/README.md`).
+- Supabase Auth with a **single admin role** (not the `admin`/`vendedor`
+  split originally planned — see the spec's "Out of scope" for the explicit
+  tradeoff; adding a second role later is additive: a `profiles` table +
+  tighter RLS, not a rewrite).
+- Row Level Security: public `select`, `authenticated`-only
+  `insert`/`update`/`delete` on `vehicles` (same migration file as 4.1).
+- **Risk**: RLS policy gaps are a real data-exposure risk (writes succeeding
+  for unauthenticated requests). **Mitigation**: policies were written and
+  tested as part of the migration script, not left to app-level checks
+  alone — an unauthenticated `insert`/`update`/`delete` fails at the
+  database regardless of what the UI hides.
 - **Risk**: auth/session handling is new surface area for a codebase with
-  none today. **Mitigation**: keep it inside `infrastructure/` +
-  `presentation/` of the `admin` module; don't leak auth state into
-  `inventory`/`leads`.
+  none before this. **Mitigation**: kept inside `infrastructure/` +
+  `presentation/` of the `admin` module (`AuthProvider`/`useAuth`/
+  `ProtectedRoute`); `inventory`/`leads` have no auth-state dependency.
+- **No service_role key anywhere in app code** — admin writes go through the
+  authenticated user's session (the same `anon` key + RLS), never a
+  privileged server-side key.
 
 ### 4.3 Lead persistence (`src/modules/leads`)
 
@@ -128,10 +131,9 @@ As Phase 2 features ship, new strings will be added under time pressure.
 exists specifically to review new UI work for missing `es`/`en` keys —
 invoke it as part of reviewing any Phase 2 UI change.
 
-### Acceptance criteria for Phase 4 (to define per sub-feature)
+### Acceptance criteria for Phase 4
 
-Each of 4.1–4.4 should get its own spec (via
-`.claude/templates/spec-template.md`) with its own acceptance criteria
-before implementation — this document intentionally doesn't pre-define them
-in detail, since the concrete contracts (Supabase schema, RLS policies,
-auth flow) should be designed at that time, not guessed now.
+4.1 and 4.2's acceptance criteria live in their own specs (linked above),
+per this project's Spec Driven Development flow — see those files, not this
+document, for the checklist. 4.3 and 4.4 should each get their own spec the
+same way before implementation starts.

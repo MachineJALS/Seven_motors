@@ -6,7 +6,7 @@ export interface Vehicle {
   brand: string;
   model: string;
   year: number;
-  price: number; // in USD
+  price: number; // in CRC (Costa Rican colones)
   mileage: number; // in km
   fuelType: FuelType;
   transmission: Transmission;

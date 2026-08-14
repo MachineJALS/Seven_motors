@@ -41,7 +41,14 @@ was either stale or built from a different commit.** The entry was dropped
 This also means the README's claim of "8 autos de ejemplo" was already
 stale: the file only ever had 4 complete, valid vehicle entries.
 
-### 2. Vehicle prices mix currencies under a single "USD" field
+### 2. Vehicle prices mix currencies under a single "USD" field — RESOLVED
+
+**Update**: confirmed with the dealer and fixed as part of
+`.claude/specs/supabase-inventory-backend/spec.md` — the 3 higher-magnitude
+values were genuinely CRC (colones), not USD; the Elantra had no real listed
+price and now uses a dealer-supplied estimate (₡5,621,250, from $12,500 at
+₡449.70/$1). All prices are now normalized to CRC and the site displays `₡`
+instead of `$`. Left below as it was originally written, for the audit trail.
 
 `Vehiculo.precio` is typed and commented `// en USD`, but of the 4 valid
 entries:

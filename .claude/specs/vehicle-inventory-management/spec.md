@@ -108,7 +108,7 @@ interface Vehicle {
   brand: string;
   model: string;
   year: number;
-  price: number; // USD
+  price: number; // CRC (Costa Rican colones) — was USD in the original MVP, see docs/audit-report.md Finding #2
   mileage: number; // km
   fuelType: FuelType;
   transmission: Transmission;
@@ -119,11 +119,12 @@ interface Vehicle {
 }
 ```
 
-No network API today — `infrastructure/static-vehicle-repository.ts` exports
-`vehicles: Vehicle[]` directly. Phase 2 replaces this file's internals with a
-Supabase query behind the same exported shape (`vehicles` becomes an
-async-loaded value, or the repository exposes a `getVehicles(): Promise<Vehicle[]>`
-function) — see `docs/migration-plan.md` for the concrete contract change.
+**Update**: `infrastructure/supabase-vehicle-repository.ts` now backs this
+with a real Supabase table, exposing `getVehicles(): Promise<Vehicle[]>` /
+`getVehicleById(id): Promise<Vehicle | null>` — see
+`.claude/specs/supabase-inventory-backend/spec.md` for the full contract.
+`domain/` and `application/` were unaffected; `presentation/` gained
+loading/error states for the now-async reads.
 
 ## Dependencies
 
@@ -146,7 +147,7 @@ function) — see `docs/migration-plan.md` for the concrete contract change.
 - [x] Sold vehicles show a sold indicator and no active WhatsApp button.
 - [x] WhatsApp inquiry message includes brand/model/year/price in the active language.
 - [x] All strings covered by `es`/`en` translations; enum values render via `enums.*` keys, not raw data.
-- [ ] Phase 2: repository swapped to Supabase without changing `domain/`, `application/`, or `presentation/`.
+- [x] Phase 2: repository swapped to Supabase without changing `domain/` or `application/` (`presentation/` gained loading/error states, as anticipated).
 
 ## Test plan
 

@@ -14,7 +14,7 @@ export default function PriceTag({ price, size = "sm" }: Props) {
 
   return (
     <span className={`price-tag ${size === "lg" ? "price-tag--lg" : ""}`}>
-      <span className="price-tag__currency">$</span>
+      <span className="price-tag__currency">₡</span>
       {formatter.format(price)}
     </span>
   );

@@ -1,4 +1,8 @@
 {
+  "status": {
+    "loading": "Loading…",
+    "error": "Couldn't load this. Please try again later."
+  },
   "header": {
     "cta": "Message us",
     "ctaMessage": "Hi, I'd like more information about your vehicles."
@@ -16,7 +20,7 @@
   "filters": {
     "brand": "Brand",
     "allBrands": "All",
-    "maxPrice": "Max price (USD)",
+    "maxPrice": "Max price (₡)",
     "maxPriceUnlimited": "No limit",
     "yearFrom": "Year from",
     "yearAny": "Any",
@@ -36,7 +40,7 @@
     "color": "Color",
     "notFoundTitle": "Vehicle not found",
     "notFoundText": "It may have already been sold, or the link may be incorrect.",
-    "inquiryMessage": "Hi, I'm interested in the {{brand}} {{model}} {{year}} (price ${{price}}) I saw on the website."
+    "inquiryMessage": "Hi, I'm interested in the {{brand}} {{model}} {{year}} (price ₡{{price}}) I saw on the website."
   },
   "notFound": {
     "title": "Page not found",
@@ -61,5 +65,50 @@
   "language": {
     "es": "ES",
     "en": "EN"
+  },
+  "admin": {
+    "login": {
+      "title": "Sign in",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "error": "Incorrect email or password."
+    },
+    "nav": {
+      "title": "Admin panel",
+      "signOut": "Sign out"
+    },
+    "list": {
+      "title": "Vehicles",
+      "addVehicle": "Add vehicle",
+      "edit": "Edit",
+      "delete": "Delete",
+      "confirmDelete": "Delete this vehicle? This can't be undone.",
+      "markSold": "Mark sold",
+      "markAvailable": "Mark available",
+      "empty": "No vehicles yet.",
+      "sold": "Sold"
+    },
+    "form": {
+      "titleNew": "Add vehicle",
+      "titleEdit": "Edit vehicle",
+      "brand": "Brand",
+      "model": "Model",
+      "year": "Year",
+      "price": "Price (₡)",
+      "mileage": "Mileage (km)",
+      "fuelType": "Fuel type",
+      "transmission": "Transmission",
+      "color": "Color",
+      "description": "Description",
+      "photos": "Photos (one URL per line)",
+      "sold": "Sold",
+      "save": "Save",
+      "cancel": "Cancel",
+      "saving": "Saving…",
+      "error": "Couldn't save. Please try again.",
+      "required": "This field is required."
+    }
   }
 }

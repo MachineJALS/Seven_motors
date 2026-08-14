@@ -10,25 +10,45 @@ adelante sin una reescritura — ver [`docs/architecture.md`](docs/architecture.
 
 ## Cómo correrlo en tu computadora
 
-Necesitás tener [Node.js](https://nodejs.org) instalado (versión 18 o más reciente).
+Necesitás tener [Node.js](https://nodejs.org) instalado (versión 18 o más reciente)
+y un proyecto de [Supabase](https://supabase.com) (el inventario ya no vive
+en el código, vive en una base de datos real — ver "Inventario y panel de
+administración" más abajo).
 
 ```bash
-npm install     # instala las dependencias (solo la primera vez)
-npm run dev     # levanta el sitio en http://localhost:5173
+cp .env.example .env.local   # solo la primera vez: completá con tus datos de Supabase
+npm install                  # instala las dependencias (solo la primera vez)
+npm run dev                  # levanta el sitio en http://localhost:5173
 ```
 
 Cada vez que guardés un archivo, el navegador se actualiza solo.
+
+## Inventario y panel de administración
+
+Desde la reestructuración de Fase 2, los autos ya no se editan tocando
+código:
+
+1. Corré una vez `supabase/migrations/0001_create_vehicles.sql` en el
+   **SQL Editor** de tu proyecto de Supabase — crea la tabla `vehicles`, las
+   políticas de seguridad (RLS), y carga los 4 autos existentes.
+2. Creá tu cuenta de administrador en **Authentication → Users** del
+   dashboard de Supabase (con el email/contraseña que vas a usar para
+   entrar).
+3. Entrá a `/admin` en el sitio, iniciá sesión, y desde ahí agregás, editás,
+   marcás como vendido, o eliminás autos — se reflejan en el catálogo
+   público al instante, sin tocar código ni hacer `git push`.
+
+Las fotos siguen siendo un link a una imagen (no se suben archivos desde el
+panel todavía). Los precios se cargan en **colones (₡)**, no dólares.
 
 ## Lo primero que tenés que editar
 
 1. **`src/shared/config/agency.ts`** — nombre real de la agencia, ciudad y
    **número de WhatsApp** (formato: código de país + número, sin "+" ni
    espacios, ej. `50688887777`).
-2. **`src/modules/inventory/infrastructure/static-vehicle-repository.ts`** —
-   reemplazá el inventario de ejemplo por el real. Cada auto es un objeto
-   con marca, modelo, año, precio, fotos, etc. Para las fotos, por ahora
-   podés usar links a imágenes que ya tengas subidas a algún lado (o
-   subirlas a Supabase Storage cuando lleguemos a la Fase 2).
+2. **`.env.local`** — tu `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`
+   (Project Settings → API en tu proyecto de Supabase). Nunca compartas ni
+   subas a git la clave `service_role` — este sitio no la necesita.
 3. **`src/shared/i18n/locales/{es,en}/common.json`** — si cambiás textos
    fijos del sitio (botones, títulos), actualizalos en **ambos** idiomas.
 4. **`index.html`** — título y descripción ya apuntan a Seven Motor; ajustalos
@@ -46,12 +66,17 @@ Cada vez que guardés un archivo, el navegador se actualiza solo.
    - **Build output directory:** `dist`
 4. Cloudflare te da un dominio gratis del tipo `tuagencia.pages.dev`, y despliega
    automáticamente cada vez que hacés `git push`.
+5. En **Settings → Environment variables** de Cloudflare Pages, agregá
+   `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` con los mismos valores que
+   tenés en tu `.env.local` — sin esto el sitio publicado no va a poder leer
+   el inventario.
 
 ## Arquitectura y flujo de trabajo con Claude Code
 
 Este repo usa una estructura por dominios (`src/modules/inventory`,
-`src/modules/leads`, y los scaffolds `quotes`/`admin`), más tres artefactos de
-Claude Code documentados a fondo en [`docs/architecture.md`](docs/architecture.md):
+`src/modules/leads`, `src/modules/admin` implementados; `quotes` sigue como
+scaffold), más tres artefactos de Claude Code documentados a fondo en
+[`docs/architecture.md`](docs/architecture.md):
 
 - **Skills** (`.claude/skills/`) — procedimientos reutilizables para tareas
   específicas (VIN, filtrado de inventario, cotizaciones básicas).
@@ -67,10 +92,10 @@ Instrucciones para Claude Code: [`CLAUDE.md`](CLAUDE.md).
 
 ## Qué sigue (Fase 2 del plan)
 
-- Conectar Supabase (base de datos + autenticación) para poder editar el
-  inventario desde un panel `/admin` en vez de tocar código.
-- Roles `admin` / `vendedor` con Row Level Security.
-- Guardar los mensajes de WhatsApp/formulario de contacto como leads.
+- ~~Conectar Supabase y un panel `/admin` para editar inventario sin tocar código~~ — hecho.
+- Roles `admin` / `vendedor` separados con Row Level Security (hoy hay un solo rol admin, a propósito — ver la spec de `admin-vehicle-management`).
+- Guardar los mensajes de WhatsApp/formulario de contacto como leads (`src/modules/leads` ya modela `Lead`, falta persistirlo).
+- Subida de fotos a Supabase Storage en vez de pegar un link.
 - Evaluar agregar `vite-react-ssg` para mejorar las vistas previas al compartir
   fichas de autos por WhatsApp/Facebook (ver la sección de SEO del plan).
 
@@ -84,11 +109,12 @@ src/
   modules/
     inventory/                 catálogo — domain / application / infrastructure / presentation
     leads/                      flujo de contacto por WhatsApp
-    quotes/                     scaffold (Fase 2)
-    admin/                      scaffold (Fase 2)
+    admin/                      panel /admin — auth, CRUD de vehículos
+    quotes/                     scaffold (Fase 2, aún sin construir)
   shared/
     config/                     datos de la agencia (agency.ts)
     i18n/                       textos ES/EN y selector de idioma
+    infrastructure/             cliente de Supabase compartido
     ui/                         Header, Footer, página 404
     styles/                     todos los estilos (index.css)
 .claude/
@@ -96,8 +122,11 @@ src/
   agents/                       subagentes especializados por dominio
   specs/                        specs de features (formato Spec Driven Development)
   templates/                    plantilla de spec
+supabase/
+  migrations/                   SQL para correr en el editor de Supabase
 docs/
   architecture.md               arquitectura objetivo y guía de uso
   audit-report.md                auditoría del estado previo
   migration-plan.md              plan de migración (hecho y futuro)
+  git-workflow.md                 flujo de ramas (Git Flow, aún no en uso)
 ```

@@ -2,12 +2,12 @@ import type { Vehicle } from "@/modules/inventory/domain/vehicle";
 
 type Translate = (key: string, options?: Record<string, unknown>) => string;
 
-export function buildVehicleInquiryMessage(vehicle: Vehicle, t: Translate): string {
+export function buildVehicleInquiryMessage(vehicle: Vehicle, t: Translate, formattedPrice: string): string {
   return t("detail.inquiryMessage", {
     brand: vehicle.brand,
     model: vehicle.model,
     year: vehicle.year,
-    price: vehicle.price,
+    price: formattedPrice,
   });
 }
 

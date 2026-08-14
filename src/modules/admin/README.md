@@ -1,12 +1,19 @@
-# Admin module — scaffolded, not implemented
+# Admin module
 
-Explicitly Phase 2 per the project's original roadmap: a `/admin` panel with
-`admin`/`vendedor` roles and Row Level Security, backed by Supabase, to edit
-inventory without touching code and to review captured leads.
+Implemented per `.claude/specs/admin-vehicle-management/spec.md`: a `/admin`
+panel gated by Supabase Auth (single admin role — see the spec's "Out of
+scope" for why the original `admin`/`vendedor` multi-role plan was scoped
+down) to create/edit/delete vehicles and toggle sold status, without a code
+change + redeploy per update.
 
-Payments, financing, and credit-scoring features are **not** planned for this
-module even in Phase 2 — see `docs/architecture.md` for the explicit
-out-of-scope note. When built, this module follows the same layering as
-`inventory`: `domain/` (auth/role types), `application/` (use-cases like
-`updateVehicle`, `listLeads`), `infrastructure/` (Supabase auth + repositories),
-`presentation/` (admin routes/pages, gated behind auth).
+- `application/` — `signIn`/`signOut`/`getSession`, vehicle
+  create/update/delete use-cases (thin re-exports over `infrastructure/`).
+- `infrastructure/` — `supabase-auth.ts`, `vehicle-write-repository.ts`
+  (writes to the same `vehicles` table `inventory` reads from).
+- `presentation/` — `AuthProvider`/`useAuth`/`ProtectedRoute`, login page,
+  vehicle list page, create/edit form.
+
+Not implemented (see the spec's "Out of scope"): multi-role permissions,
+photo upload to Supabase Storage (photos are pasted URLs), bulk import.
+Payments, financing, and credit-scoring features are **not** planned for
+this module — see `docs/architecture.md`.
