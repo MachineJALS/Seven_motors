@@ -1,0 +1,524 @@
+/* ─────────────────────────────────────────────────────────────
+   TOKENS
+   Paleta inspirada en el mundo del taller/lote de carros: asfalto,
+   línea vial y el amarillo de los rótulos de precio pintados a
+   mano en los parabrisas — no en el cliché "crema + serif + terracota".
+   ───────────────────────────────────────────────────────────── */
+:root {
+  /* Color */
+  --color-bg: #f5f6f3;
+  --color-bg-alt: #eceee8;
+  --color-ink: #16201b;
+  --color-ink-soft: #45514a;
+  --color-primary: #1f4d3d;
+  --color-primary-dark: #143329;
+  --color-accent: #e8a93c;
+  --color-tag-bg: #f4c43d;
+  --color-tag-ink: #2b2005;
+  --color-whatsapp: #25d366;
+  --color-whatsapp-dark: #1da851;
+  --color-line: #d8dbd2;
+  --color-danger: #b3432b;
+
+  /* Tipografía */
+  --font-display: "Big Shoulders Condensed", "Arial Narrow", sans-serif;
+  --font-body: "Work Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "Space Mono", "Courier New", monospace;
+
+  /* Layout */
+  --radius: 6px;
+  --shadow-card: 0 1px 2px rgba(22, 32, 27, 0.06), 0 4px 12px rgba(22, 32, 27, 0.06);
+  --max-width: 1180px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+  margin: 0 0 0.4em 0;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   HEADER
+   ───────────────────────────────────────────────────────────── */
+.header {
+  background: var(--color-primary-dark);
+  color: var(--color-bg);
+  border-bottom: 4px solid var(--color-accent);
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  gap: 16px;
+}
+
+.header__brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+  text-decoration: none;
+  color: var(--color-bg);
+}
+
+.header__brand-name {
+  font-family: var(--font-display);
+  font-size: 28px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.header__brand-city {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-accent);
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
+
+.header__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-whatsapp);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.header__cta:hover {
+  background: var(--color-whatsapp-dark);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   HERO / INTRO DE CATÁLOGO
+   ───────────────────────────────────────────────────────────── */
+.hero {
+  background: var(--color-primary);
+  color: var(--color-bg);
+  padding: 40px 0 32px;
+}
+
+.hero__title {
+  font-size: clamp(32px, 6vw, 52px);
+  color: var(--color-bg);
+  margin-bottom: 8px;
+}
+
+.hero__subtitle {
+  font-family: var(--font-body);
+  text-transform: none;
+  font-size: 16px;
+  color: #cfe0d6;
+  max-width: 46ch;
+  margin: 0;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FILTROS
+   ───────────────────────────────────────────────────────────── */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  background: #fff;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: -24px 0 28px;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  z-index: 1;
+}
+
+.filtro-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 140px;
+}
+
+.filtro-campo label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-ink-soft);
+}
+
+.filtro-campo select,
+.filtro-campo input {
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  color: var(--color-ink);
+}
+
+.filtro-limpiar {
+  flex: 0 0 auto;
+  background: none;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  padding: 8px 14px;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--color-ink-soft);
+}
+
+.filtro-limpiar:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   GRID / TARJETAS DE VEHÍCULO
+   ───────────────────────────────────────────────────────────── */
+.catalogo-meta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-ink-soft);
+  margin-bottom: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  padding-bottom: 48px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(22, 32, 27, 0.12);
+}
+
+.card__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: var(--color-bg-alt);
+  overflow: hidden;
+}
+
+.card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card__body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.card__title {
+  font-size: 22px;
+  margin: 0;
+}
+
+.card__specs {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-ink-soft);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.card__footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 6px;
+}
+
+/* Elemento firma: el "rótulo de precio" tipo parabrisas de lote */
+.price-tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  background: var(--color-tag-bg);
+  color: var(--color-tag-ink);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 3px;
+  transform: rotate(-2deg);
+  box-shadow: 1px 2px 0 rgba(43, 32, 5, 0.15);
+}
+
+.price-tag--lg {
+  font-size: 22px;
+  padding: 10px 16px;
+}
+
+.price-tag__currency {
+  font-size: 0.65em;
+}
+
+.badge-vendido {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--color-danger);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 8px;
+  border-radius: 3px;
+  z-index: 1;
+}
+
+.ver-mas {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.vacio {
+  padding: 48px 0;
+  text-align: center;
+  color: var(--color-ink-soft);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FICHA DE VEHÍCULO
+   ───────────────────────────────────────────────────────────── */
+.ficha-volver {
+  display: inline-block;
+  margin: 20px 0 12px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--color-ink-soft);
+  text-decoration: none;
+}
+
+.ficha-volver:hover {
+  color: var(--color-primary);
+}
+
+.ficha {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 32px;
+  padding-bottom: 56px;
+}
+
+@media (max-width: 780px) {
+  .ficha {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ficha__foto-principal {
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--color-bg-alt);
+  aspect-ratio: 4 / 3;
+}
+
+.ficha__foto-principal img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ficha__miniaturas {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.ficha__miniaturas button {
+  border: 2px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+  padding: 0;
+  cursor: pointer;
+  width: 72px;
+  height: 54px;
+  background: var(--color-bg-alt);
+}
+
+.ficha__miniaturas button.activa {
+  border-color: var(--color-primary);
+}
+
+.ficha__miniaturas img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ficha__titulo {
+  font-size: clamp(28px, 4vw, 40px);
+  margin-bottom: 4px;
+}
+
+.ficha__ubicacion {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-ink-soft);
+  margin-bottom: 16px;
+}
+
+.ficha__tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  margin: 20px 0;
+}
+
+.ficha__tabla td {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.ficha__tabla td:first-child {
+  color: var(--color-ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  width: 40%;
+}
+
+.ficha__descripcion {
+  line-height: 1.7;
+  color: var(--color-ink-soft);
+  margin-bottom: 24px;
+}
+
+.btn-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background: var(--color-whatsapp);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.btn-whatsapp:hover {
+  background: var(--color-whatsapp-dark);
+}
+
+.btn-whatsapp--vendido {
+  background: var(--color-ink-soft);
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FOOTER
+   ───────────────────────────────────────────────────────────── */
+.footer {
+  background: var(--color-ink);
+  color: #a9b3ac;
+  padding: 28px 0;
+  margin-top: 40px;
+}
+
+.footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.footer a {
+  color: #cfe0d6;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   404
+   ───────────────────────────────────────────────────────────── */
+.pagina-404 {
+  padding: 80px 0;
+  text-align: center;
+}
