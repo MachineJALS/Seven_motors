@@ -29,8 +29,10 @@ export default function VehicleDetailPage() {
     return (
       <div className="wrap pagina-404">
         <h1>{t("detail.notFoundTitle")}</h1>
-        <p>{error ? t("status.error") : t("detail.notFoundText")}</p>
-        <Link to="/">{t("detail.back")}</Link>
+        <p className="pagina-404__subtitle">{error ? t("status.error") : t("detail.notFoundText")}</p>
+        <Link to="/" className="filtro-limpiar">
+          {t("detail.back")}
+        </Link>
       </div>
     );
   }
@@ -99,6 +101,7 @@ export default function VehicleDetailPage() {
 
           <WhatsAppButton
             message={buildVehicleInquiryMessage(vehicle, t, numberFormatter.format(vehicle.price))}
+            vehicleId={vehicle.id}
             sold={vehicle.sold}
           />
         </div>

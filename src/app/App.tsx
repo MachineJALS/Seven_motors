@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Header from "@/shared/ui/Header";
 import Footer from "@/shared/ui/Footer";
 import NotFoundPage from "@/shared/ui/NotFoundPage";
@@ -10,12 +11,18 @@ import LoginPage from "@/modules/admin/presentation/pages/LoginPage";
 import AdminPage from "@/modules/admin/presentation/pages/AdminPage";
 import NewVehiclePage from "@/modules/admin/presentation/pages/NewVehiclePage";
 import EditVehiclePage from "@/modules/admin/presentation/pages/EditVehiclePage";
+import LeadsPage from "@/modules/admin/presentation/pages/LeadsPage";
 
 export default function App() {
+  const { t } = useTranslation();
+
   return (
     <AuthProvider>
+      <a href="#main-content" className="skip-link">
+        {t("a11y.skipToContent")}
+      </a>
       <Header />
-      <main>
+      <main id="main-content">
         <Routes>
           <Route path="/" element={<CatalogPage />} />
           <Route path="/vehiculo/:id" element={<VehicleDetailPage />} />
@@ -41,6 +48,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <EditVehiclePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/leads"
+            element={
+              <ProtectedRoute>
+                <LeadsPage />
               </ProtectedRoute>
             }
           />

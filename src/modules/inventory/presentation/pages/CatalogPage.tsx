@@ -2,6 +2,7 @@ import { useMemo, useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useVehicles } from "@/modules/inventory/presentation/hooks/useVehicles";
 import VehicleCard from "@/modules/inventory/presentation/components/VehicleCard";
+import VehicleCardSkeleton from "@/modules/inventory/presentation/components/VehicleCardSkeleton";
 import FilterBar from "@/modules/inventory/presentation/components/FilterBar";
 import {
   emptyFilters,
@@ -22,7 +23,13 @@ export default function CatalogPage() {
 
   let content: ReactNode;
   if (loading) {
-    content = <p className="vacio">{t("status.loading")}</p>;
+    content = (
+      <div className="grid" aria-busy="true" aria-label={t("status.loading")}>
+        {Array.from({ length: 6 }, (_, i) => (
+          <VehicleCardSkeleton key={i} />
+        ))}
+      </div>
+    );
   } else if (error) {
     content = <p className="vacio">{t("status.error")}</p>;
   } else {

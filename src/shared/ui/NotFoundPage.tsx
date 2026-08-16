@@ -7,9 +7,10 @@ export default function NotFoundPage() {
   return (
     <div className="wrap pagina-404">
       <h1>{t("notFound.title")}</h1>
-      <p>
-        <Link to="/">{t("notFound.backLink")}</Link>
-      </p>
+      <p className="pagina-404__subtitle">{t("notFound.subtitle")}</p>
+      <Link to="/" className="filtro-limpiar">
+        {t("notFound.backLink")}
+      </Link>
     </div>
   );
 }

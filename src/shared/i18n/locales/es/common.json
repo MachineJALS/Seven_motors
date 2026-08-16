@@ -3,6 +3,9 @@
     "loading": "Cargando…",
     "error": "No se pudo cargar la información. Intentá de nuevo más tarde."
   },
+  "a11y": {
+    "skipToContent": "Saltar al contenido"
+  },
   "header": {
     "cta": "Escribinos",
     "ctaMessage": "Hola, quisiera más información sobre sus vehículos."
@@ -44,6 +47,7 @@
   },
   "notFound": {
     "title": "Página no encontrada",
+    "subtitle": "El link puede estar mal escrito o la página ya no existe.",
     "backLink": "← Volver al catálogo"
   },
   "whatsapp": {
@@ -77,7 +81,8 @@
     },
     "nav": {
       "title": "Panel de administración",
-      "signOut": "Cerrar sesión"
+      "signOut": "Cerrar sesión",
+      "viewLeads": "Ver consultas"
     },
     "list": {
       "title": "Vehículos",
@@ -89,6 +94,18 @@
       "markAvailable": "Marcar disponible",
       "empty": "Todavía no hay vehículos cargados.",
       "sold": "Vendido"
+    },
+    "leads": {
+      "title": "Consultas por WhatsApp",
+      "back": "← Volver a vehículos",
+      "empty": "Todavía no hay consultas registradas.",
+      "source": {
+        "whatsapp-header": "Consulta general",
+        "whatsapp-vehicle-inquiry": "Consulta sobre un auto"
+      },
+      "noVehicle": "—",
+      "message": "Mensaje",
+      "date": "Fecha"
     },
     "form": {
       "titleNew": "Agregar vehículo",

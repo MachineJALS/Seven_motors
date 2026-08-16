@@ -3,6 +3,9 @@
     "loading": "Loading…",
     "error": "Couldn't load this. Please try again later."
   },
+  "a11y": {
+    "skipToContent": "Skip to content"
+  },
   "header": {
     "cta": "Message us",
     "ctaMessage": "Hi, I'd like more information about your vehicles."
@@ -44,6 +47,7 @@
   },
   "notFound": {
     "title": "Page not found",
+    "subtitle": "The link may be mistyped, or the page no longer exists.",
     "backLink": "← Back to catalog"
   },
   "whatsapp": {
@@ -77,7 +81,8 @@
     },
     "nav": {
       "title": "Admin panel",
-      "signOut": "Sign out"
+      "signOut": "Sign out",
+      "viewLeads": "View leads"
     },
     "list": {
       "title": "Vehicles",
@@ -89,6 +94,18 @@
       "markAvailable": "Mark available",
       "empty": "No vehicles yet.",
       "sold": "Sold"
+    },
+    "leads": {
+      "title": "WhatsApp leads",
+      "back": "← Back to vehicles",
+      "empty": "No leads recorded yet.",
+      "source": {
+        "whatsapp-header": "General inquiry",
+        "whatsapp-vehicle-inquiry": "Vehicle inquiry"
+      },
+      "noVehicle": "—",
+      "message": "Message",
+      "date": "Date"
     },
     "form": {
       "titleNew": "Add vehicle",

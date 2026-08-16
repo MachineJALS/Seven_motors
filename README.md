@@ -28,15 +28,18 @@ Cada vez que guardés un archivo, el navegador se actualiza solo.
 Desde la reestructuración de Fase 2, los autos ya no se editan tocando
 código:
 
-1. Corré una vez `supabase/migrations/0001_create_vehicles.sql` en el
-   **SQL Editor** de tu proyecto de Supabase — crea la tabla `vehicles`, las
-   políticas de seguridad (RLS), y carga los 4 autos existentes.
+1. Corré una vez, en orden, cada archivo de `supabase/migrations/` en el
+   **SQL Editor** de tu proyecto de Supabase: `0001_create_vehicles.sql`
+   (tabla de autos + RLS + carga los 4 autos existentes) y
+   `0002_create_leads.sql` (tabla de consultas de WhatsApp + RLS).
 2. Creá tu cuenta de administrador en **Authentication → Users** del
    dashboard de Supabase (con el email/contraseña que vas a usar para
    entrar).
 3. Entrá a `/admin` en el sitio, iniciá sesión, y desde ahí agregás, editás,
    marcás como vendido, o eliminás autos — se reflejan en el catálogo
-   público al instante, sin tocar código ni hacer `git push`.
+   público al instante, sin tocar código ni hacer `git push`. Desde
+   `/admin/leads` ves cada clic en "Escribir por WhatsApp" (general o por
+   auto), con fecha y mensaje.
 
 Las fotos siguen siendo un link a una imagen (no se suben archivos desde el
 panel todavía). Los precios se cargan en **colones (₡)**, no dólares.
@@ -93,8 +96,8 @@ Instrucciones para Claude Code: [`CLAUDE.md`](CLAUDE.md).
 ## Qué sigue (Fase 2 del plan)
 
 - ~~Conectar Supabase y un panel `/admin` para editar inventario sin tocar código~~ — hecho.
+- ~~Guardar los clics de WhatsApp como leads~~ — hecho, ver `/admin/leads`.
 - Roles `admin` / `vendedor` separados con Row Level Security (hoy hay un solo rol admin, a propósito — ver la spec de `admin-vehicle-management`).
-- Guardar los mensajes de WhatsApp/formulario de contacto como leads (`src/modules/leads` ya modela `Lead`, falta persistirlo).
 - Subida de fotos a Supabase Storage en vez de pegar un link.
 - Evaluar agregar `vite-react-ssg` para mejorar las vistas previas al compartir
   fichas de autos por WhatsApp/Facebook (ver la sección de SEO del plan).

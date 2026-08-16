@@ -40,9 +40,14 @@ export default function AdminPage() {
     <div className="wrap">
       <div className="admin-header">
         <h1>{t("admin.nav.title")}</h1>
-        <button type="button" className="filtro-limpiar" onClick={() => void signOut()}>
-          {t("admin.nav.signOut")}
-        </button>
+        <div className="admin-header__actions">
+          <Link to="/admin/leads" className="filtro-limpiar">
+            {t("admin.nav.viewLeads")}
+          </Link>
+          <button type="button" className="filtro-limpiar" onClick={() => void signOut()}>
+            {t("admin.nav.signOut")}
+          </button>
+        </div>
       </div>
 
       <div className="admin-header">

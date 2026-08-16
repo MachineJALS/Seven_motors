@@ -23,10 +23,13 @@
 
   /* Tipografía */
   --font-body: "Work Sans", system-ui, -apple-system, sans-serif;
+  --font-display: "Outfit", "Work Sans", system-ui, -apple-system, sans-serif;
 
   /* Layout */
-  --radius: 10px;
+  --radius: 14px;
+  --radius-sm: 8px;
   --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.06);
+  --shadow-card-hover: 0 12px 28px rgba(15, 23, 42, 0.12);
   --max-width: 1180px;
 }
 
@@ -36,6 +39,7 @@
 
 html {
   color-scheme: light;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -46,14 +50,17 @@ body {
   font-size: 16px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  text-wrap: pretty;
 }
 
 h1, h2, h3, h4 {
-  font-family: var(--font-body);
+  font-family: var(--font-display);
   font-weight: 700;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
   color: var(--color-ink);
   margin: 0 0 0.4em 0;
+  text-wrap: balance;
 }
 
 a {
@@ -69,9 +76,39 @@ button {
   font-family: inherit;
 }
 
+button,
+a {
+  transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+button:active,
+.card:active {
+  transform: scale(0.98);
+}
+
 :focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  top: -48px;
+  left: 12px;
+  z-index: 100;
+  background: var(--color-primary);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: top 0.15s ease;
+}
+
+.skip-link:focus-visible {
+  top: 12px;
 }
 
 .wrap {
@@ -106,6 +143,7 @@ button {
 }
 
 .header__brand-name {
+  font-family: var(--font-display);
   font-size: 22px;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -143,7 +181,7 @@ button {
 .language-switcher {
   display: inline-flex;
   border: 1px solid var(--color-line);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   overflow: hidden;
 }
 
@@ -168,13 +206,14 @@ button {
    HERO / INTRO DE CATÁLOGO
    ───────────────────────────────────────────────────────────── */
 .hero {
-  background: var(--color-bg-alt);
+  background: radial-gradient(circle at 85% 0%, rgba(37, 99, 235, 0.08), transparent 55%), var(--color-bg-alt);
   color: var(--color-ink);
-  padding: 48px 0 40px;
+  padding: 56px 0 44px;
 }
 
 .hero__title {
-  font-size: clamp(28px, 5vw, 44px);
+  font-family: var(--font-display);
+  font-size: clamp(30px, 5vw, 48px);
   color: var(--color-ink);
   margin-bottom: 8px;
 }
@@ -223,7 +262,7 @@ button {
   font-size: 14px;
   padding: 8px 10px;
   border: 1px solid var(--color-line);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   background: var(--color-bg);
   color: var(--color-ink);
 }
@@ -238,7 +277,7 @@ button {
   display: inline-block;
   background: none;
   border: 1px solid var(--color-line);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   padding: 8px 14px;
   font-size: 13px;
   cursor: pointer;
@@ -269,7 +308,6 @@ button {
 
 .card {
   background: #fff;
-  border: 1px solid var(--color-line);
   border-radius: var(--radius);
   overflow: hidden;
   text-decoration: none;
@@ -277,13 +315,12 @@ button {
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-card);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .card:hover {
   transform: translateY(-3px);
-  border-color: var(--color-primary);
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.1);
+  box-shadow: var(--shadow-card-hover);
 }
 
 .card__media {
@@ -333,8 +370,10 @@ button {
   display: inline-flex;
   align-items: baseline;
   gap: 2px;
+  font-family: var(--font-display);
   color: var(--color-primary);
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .price-tag--lg {
@@ -356,7 +395,7 @@ button {
   text-transform: uppercase;
   letter-spacing: 0.04em;
   padding: 4px 8px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   z-index: 1;
 }
 
@@ -370,6 +409,50 @@ button {
   padding: 48px 0;
   text-align: center;
   color: var(--color-ink-soft);
+}
+
+.card--skeleton {
+  cursor: default;
+}
+
+.skeleton-block {
+  background: linear-gradient(90deg, var(--color-bg-alt) 25%, var(--color-line) 37%, var(--color-bg-alt) 63%);
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.4s ease infinite;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-line {
+  height: 14px;
+}
+
+.skeleton-line--title {
+  width: 70%;
+  height: 19px;
+}
+
+.skeleton-line--specs {
+  width: 50%;
+}
+
+.skeleton-line--price {
+  width: 35%;
+  height: 22px;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-block {
+    animation: none;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -421,7 +504,7 @@ button {
 
 .ficha__miniaturas button {
   border: 2px solid transparent;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   overflow: hidden;
   padding: 0;
   cursor: pointer;
@@ -455,6 +538,7 @@ button {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
+  font-variant-numeric: tabular-nums;
   margin: 20px 0;
 }
 
@@ -535,6 +619,11 @@ button {
   text-align: center;
 }
 
+.pagina-404__subtitle {
+  color: var(--color-ink-soft);
+  margin-bottom: 24px;
+}
+
 /* ─────────────────────────────────────────────────────────────
    ADMIN
    ───────────────────────────────────────────────────────────── */
@@ -562,7 +651,7 @@ button {
   font-size: 14px;
   padding: 8px 10px;
   border: 1px solid var(--color-line);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   background: var(--color-bg);
   color: var(--color-ink);
   resize: vertical;
@@ -604,6 +693,11 @@ button {
   justify-content: space-between;
   margin: 24px 0 16px;
   gap: 12px;
+}
+
+.admin-header__actions {
+  display: flex;
+  gap: 10px;
 }
 
 .admin-add-link {

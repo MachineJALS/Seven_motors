@@ -106,15 +106,22 @@ the reason this restructuring was done first.
   authenticated user's session (the same `anon` key + RLS), never a
   privileged server-side key.
 
-### 4.3 Lead persistence (`src/modules/leads`)
+### 4.3 Lead persistence (`src/modules/leads`) — done
 
-- `infrastructure/supabase-lead-repository.ts` writes a `Lead` (already
-  modeled in `domain/lead.ts`) whenever a WhatsApp inquiry is sent, or when
-  a contact form (not yet built) is submitted.
+Implemented per `.claude/specs/lead-persistence/spec.md`, scoped to passive
+click-logging (no name/phone capture form) per the project owner's explicit
+choice to keep zero friction in front of the WhatsApp redirect.
+
+- `leads/infrastructure/supabase-lead-repository.ts` records a `Lead`
+  (`domain/lead.ts`) on every WhatsApp button click — header and per-vehicle.
+- `admin/infrastructure/lead-read-repository.ts` + `/admin/leads` let the
+  dealer review them; RLS makes this the only way to read leads back (public
+  `insert` only, `select` restricted to `authenticated`).
 - **Risk**: writing a lead record before/without confirming the WhatsApp
   message actually sent could produce false-positive leads. **Mitigation**:
-  fire the write from a confirmed user action (e.g. the `wa.me` link click),
-  not speculatively.
+  the write fires from the button's `onClick`, i.e. a confirmed user action,
+  not speculatively — and a failed write never blocks or delays the
+  redirect (fire-and-forget, error only logged to the console).
 
 ### 4.4 Basic quotes (`src/modules/quotes`)
 
