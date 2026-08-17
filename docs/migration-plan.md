@@ -79,8 +79,10 @@ the reason this restructuring was done first.
   the spec.
 - The price-currency bug (audit finding #2) is resolved: all 4 vehicles
   migrated with dealer-confirmed CRC prices (see the spec's "Data & currency
-  correction" section) via `supabase/migrations/0001_create_vehicles.sql`,
-  run by the project owner in the Supabase SQL editor.
+  correction" section) via a migration script run by the project owner in
+  the Supabase SQL editor. The script isn't committed to this repo (it's
+  public, and the script shows real schema/data) — kept locally under
+  `supabase/migrations/` (gitignored).
 - `CatalogPage`/`VehicleDetailPage` gained loading/error states via
   `useVehicles`/`useVehicle` hooks — the risk called out below was real and
   handled as anticipated.

@@ -35,10 +35,11 @@ Cada vez que guardés un archivo, el navegador se actualiza solo.
 Desde la reestructuración de Fase 2, los autos ya no se editan tocando
 código:
 
-1. Corré una vez, en orden, cada archivo de `supabase/migrations/` en el
-   **SQL Editor** de tu proyecto de Supabase: `0001_create_vehicles.sql`
-   (tabla de autos + RLS + carga los 4 autos existentes) y
-   `0002_create_leads.sql` (tabla de consultas de WhatsApp + RLS).
+1. Corré una vez, en orden, cada script SQL (tabla de autos + RLS, y tabla
+   de consultas de WhatsApp + RLS) en el **SQL Editor** de tu proyecto de
+   Supabase. Los scripts no están en este repo a propósito (es público y
+   muestran la estructura real + datos) — se guardan localmente en
+   `supabase/migrations/` (ignorado por git) o se piden directamente.
 2. Creá tu cuenta de administrador en **Authentication → Users** del
    dashboard de Supabase (con el email/contraseña que vas a usar para
    entrar).
@@ -76,19 +77,17 @@ panel todavía). Los precios se cargan en **colones (₡)**, no dólares.
    - **Build output directory:** `dist`
 4. Cloudflare te da un dominio gratis del tipo `tuagencia.pages.dev`, y despliega
    automáticamente cada vez que hacés `git push`.
+5. Asegurate de crear el proyecto desde la pestaña **"Pages"** (Connect to
+   Git), no desde "Create Worker" — si queda creado como un Worker genérico
+   de solo archivos estáticos, el panel de variables de entorno se bloquea
+   con un error de Cloudflare. Con "Pages" no pasa.
+6. En **Settings → Environment variables**, agregá `VITE_SUPABASE_URL` y
+   `VITE_SUPABASE_ANON_KEY` con los mismos valores de tu `.env.local`. Sin
+   esto, el sitio publicado no va a poder leer el inventario.
 
-**Sobre las variables de entorno**: si tu proyecto quedó creado en Cloudflare
-como un "Worker" de solo archivos estáticos (no clásico "Pages"), el panel
-de **Settings → Variables** puede bloquearse con el error *"Variables
-cannot be added to a Worker that only has static assets"* — es una
-limitación de Cloudflare, no algo que rompiste. Por eso este repo ya trae
-committeado un archivo **`.env.production`** con `VITE_SUPABASE_URL` y
-`VITE_SUPABASE_ANON_KEY` — Vite los toma automáticamente al hacer
-`npm run build`, sin depender del panel de Cloudflare. Es seguro tenerlos
-en el repo porque la `anon key` está pensada para ser pública (la
-protección real la da Row Level Security en Supabase, no que la clave sea
-secreta). Si alguna vez cambiás de proyecto de Supabase, actualizá ese
-archivo con los valores nuevos.
+Nota: no hay ningún archivo de entorno committeado en este repo (es
+público) — las variables de producción viven únicamente en el panel de
+Cloudflare.
 
 ## Arquitectura y flujo de trabajo con Claude Code
 

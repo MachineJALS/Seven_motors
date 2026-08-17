@@ -11,6 +11,11 @@ node_modules
 dist
 dist-ssr
 *.local
+.env.production
+
+# Kept local-only: reveals the real Supabase schema/data, this repo is
+# public. Ask for the migration SQL directly instead of committing it.
+supabase/
 
 # Editor directories and files
 .vscode/*
