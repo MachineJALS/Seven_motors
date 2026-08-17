@@ -1,6 +1,7 @@
 import type { FuelType, Vehicle } from "@/modules/inventory/domain/vehicle";
 
 export interface VehicleFilters {
+  query: string;
   brand: string;
   maxPrice: string;
   yearFrom: string;
@@ -8,6 +9,7 @@ export interface VehicleFilters {
 }
 
 export const emptyFilters: VehicleFilters = {
+  query: "",
   brand: "",
   maxPrice: "",
   yearFrom: "",
@@ -15,7 +17,13 @@ export const emptyFilters: VehicleFilters = {
 };
 
 export function filterVehicles(vehicles: Vehicle[], filters: VehicleFilters): Vehicle[] {
+  const normalizedQuery = filters.query.trim().toLowerCase();
+
   return vehicles.filter((vehicle) => {
+    if (normalizedQuery) {
+      const haystack = `${vehicle.brand} ${vehicle.model}`.toLowerCase();
+      if (!haystack.includes(normalizedQuery)) return false;
+    }
     if (filters.brand && vehicle.brand !== filters.brand) return false;
     if (filters.maxPrice && vehicle.price > Number(filters.maxPrice)) return false;
     if (filters.yearFrom && vehicle.year < Number(filters.yearFrom)) return false;

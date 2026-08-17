@@ -21,6 +21,17 @@ export default function FilterBar({ filters, brands, fuelTypes, onChange }: Prop
   return (
     <div className="filtros">
       <div className="filtro-campo">
+        <label htmlFor="f-query">{t("filters.query")}</label>
+        <input
+          id="f-query"
+          type="search"
+          placeholder={t("filters.queryPlaceholder")}
+          value={filters.query}
+          onChange={(e) => update("query", e.target.value)}
+        />
+      </div>
+
+      <div className="filtro-campo">
         <label htmlFor="f-brand">{t("filters.brand")}</label>
         <select id="f-brand" value={filters.brand} onChange={(e) => update("brand", e.target.value)}>
           <option value="">{t("filters.allBrands")}</option>

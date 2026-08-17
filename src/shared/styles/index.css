@@ -129,10 +129,11 @@ button:active,
 
 .header__inner {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  gap: 16px;
+  gap: 12px 16px;
 }
 
 .header__brand {
@@ -156,10 +157,84 @@ button:active,
   margin-top: 4px;
 }
 
+.nav__toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  order: 2;
+}
+
+.nav__toggle span {
+  display: block;
+  width: 16px;
+  height: 2px;
+  margin: 0 auto;
+  background: var(--color-ink);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  order: 3;
+}
+
+.nav__link {
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-ink-soft);
+  text-decoration: none;
+}
+
+.nav__link:hover {
+  color: var(--color-ink);
+  background: var(--color-bg-alt);
+}
+
+.nav__link--active {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
 .header__actions {
   display: flex;
   align-items: center;
   gap: 12px;
+  order: 4;
+}
+
+@media (max-width: 780px) {
+  .nav__toggle {
+    display: flex;
+  }
+
+  .nav {
+    display: none;
+    order: 5;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    border-top: 1px solid var(--color-line);
+    padding-top: 10px;
+  }
+
+  .nav--open {
+    display: flex;
+  }
+
+  .nav__link {
+    padding: 10px 12px;
+  }
 }
 
 .header__cta {
@@ -224,6 +299,160 @@ button:active,
   color: var(--color-ink-soft);
   max-width: 46ch;
   margin: 0;
+}
+
+.hero--home {
+  padding: 72px 0 56px;
+}
+
+.hero--home .hero__title {
+  max-width: 18ch;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.hero__actions .btn-cta,
+.hero__whatsapp {
+  width: auto;
+  padding: 14px 24px;
+}
+
+.hero__search {
+  display: flex;
+  gap: 8px;
+  max-width: 420px;
+  margin-top: 32px;
+}
+
+.hero__search input {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 10px 14px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.hero__search input:focus {
+  border-color: var(--color-primary);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   HOME SECTIONS
+   ───────────────────────────────────────────────────────────── */
+.section {
+  padding: 48px 0;
+}
+
+.section > h2 {
+  margin-bottom: 20px;
+}
+
+.section__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.section__header h2 {
+  margin: 0;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.service-card {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 24px;
+}
+
+.service-card svg {
+  color: var(--color-cta);
+  margin-bottom: 12px;
+}
+
+.service-card h3 {
+  font-size: 17px;
+  margin-bottom: 6px;
+}
+
+.service-card p {
+  color: var(--color-ink-soft);
+  font-size: 14px;
+  margin: 0;
+}
+
+.final-cta {
+  background: var(--color-primary);
+  color: #fff;
+  padding: 48px 0;
+  margin-top: 24px;
+}
+
+.final-cta__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.final-cta h2 {
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.final-cta p {
+  color: #cbd5e1;
+  margin: 0 0 16px;
+  max-width: 46ch;
+}
+
+.final-cta .filtro-limpiar {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.final-cta .filtro-limpiar:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.content-page {
+  max-width: 68ch;
+}
+
+.content-page h2 {
+  margin-bottom: 10px;
+}
+
+.content-page p {
+  color: var(--color-ink-soft);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.content-page .btn-cta {
+  width: auto;
+  padding: 14px 24px;
+  margin-bottom: 8px;
+}
+
+.content-page__section-spaced {
+  margin-top: 40px;
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -622,6 +851,11 @@ button:active,
   justify-content: space-between;
   gap: 12px;
   font-size: 13px;
+}
+
+.footer__links {
+  display: flex;
+  gap: 16px;
 }
 
 .footer a {

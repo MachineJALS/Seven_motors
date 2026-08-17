@@ -26,31 +26,35 @@ files inside `quotes`/`admin`) rather than a rewrite.
 src/
   app/                        entry point (main.tsx) + routing (App.tsx)
   modules/
-    inventory/                 IMPLEMENTED
+    inventory/                 IMPLEMENTED — Supabase-backed
       domain/                   Vehicle, FuelType, Transmission
       application/              filterVehicles, listBrands, listFuelTypes
-      infrastructure/           static-vehicle-repository.ts (today's "backend")
-      presentation/              CatalogPage, VehicleDetailPage, VehicleCard, FilterBar, PriceTag
-    leads/                      IMPLEMENTED (WhatsApp-only channel)
-      domain/                   Lead (modeled, not yet persisted)
-      application/               build-whatsapp-inquiry.ts
-      infrastructure/            empty — Phase 2 lands supabase-lead-repository.ts here
-      presentation/               WhatsAppButton
+      infrastructure/           supabase-vehicle-repository.ts
+      presentation/              CatalogPage, VehicleDetailPage, VehicleCard, FilterBar, PriceTag, useVehicles/useVehicle hooks
+    leads/                      IMPLEMENTED (WhatsApp + passive lead logging)
+      domain/                   Lead
+      application/               build-whatsapp-inquiry.ts, record-lead.ts
+      infrastructure/            supabase-lead-repository.ts (public insert only)
+      presentation/               WhatsAppButton, WhatsAppIcon
+    admin/                      IMPLEMENTED — single admin role (see admin-vehicle-management spec)
+      application/               auth.ts, vehicle-admin.ts, leads-admin.ts
+      infrastructure/            supabase-auth.ts, vehicle-write-repository.ts, lead-read-repository.ts
+      presentation/               AuthProvider/useAuth/ProtectedRoute, login/list/form/leads pages
+    marketing/                  IMPLEMENTED — content pages, presentation/ only (see src/modules/marketing/README.md)
+      presentation/               HomePage, FinancingPage, AboutPage
     quotes/                     SCAFFOLD ONLY — README + spec pointer, no code
-    admin/                      SCAFFOLD ONLY — README + spec pointer, no code
   shared/
     config/                     AGENCY constants, buildWhatsAppLink
     i18n/                       i18next setup, es/en dictionaries, LanguageSwitcher
-    ui/                         Header, Footer, NotFoundPage (cross-cutting)
+    infrastructure/             shared Supabase client
+    ui/                         Header (with nav), Footer, NotFoundPage (cross-cutting)
     styles/                     index.css
 ```
 
-**Why only `inventory` and `leads` have real code**: they're the only things
-that exist in the running app. `quotes` and `admin` are scaffolded (a
-`README.md` explaining what belongs there and pointing at the relevant spec)
-so a future contributor — human or Claude Code — finds a documented slot to
-fill in, not an empty surprise or, worse, a half-built feature nobody asked
-for yet.
+**Why `quotes` is still just a scaffold**: it's the one piece of the
+original Phase 2 plan not yet built (see `docs/migration-plan.md` §4.4) — a
+`README.md` explains what belongs there and points at the relevant skill, so
+a future contributor finds a documented slot to fill in.
 
 ### The four layers, per module
 

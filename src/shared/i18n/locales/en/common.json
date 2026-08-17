@@ -10,6 +10,14 @@
     "cta": "Message us",
     "ctaMessage": "Hi, I'd like more information about your vehicles."
   },
+  "nav": {
+    "home": "Home",
+    "inventory": "Inventory",
+    "financing": "Financing",
+    "about": "About us",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
   "footer": {
     "rights": "© {{year}} {{name}} · {{city}}",
     "privacyNotice": "Privacy notice"
@@ -21,6 +29,8 @@
     "empty": "No vehicles match those filters."
   },
   "filters": {
+    "query": "Search",
+    "queryPlaceholder": "Brand or model",
     "brand": "Brand",
     "allBrands": "All",
     "maxPrice": "Max price (₡)",
@@ -69,6 +79,46 @@
   "language": {
     "es": "ES",
     "en": "EN"
+  },
+  "home": {
+    "heroTitle": "Trustworthy cars in {{city}}",
+    "heroSubtitle": "Browse the full inventory, filter by what you're looking for, and message us directly on WhatsApp about the car you're interested in.",
+    "ctaInventory": "View inventory",
+    "searchPlaceholder": "Brand, model...",
+    "searchButton": "Search",
+    "servicesTitle": "How we help",
+    "serviceSalesTitle": "Vehicle sales",
+    "serviceSalesText": "Inspected used-car inventory, with clear prices in colones.",
+    "serviceFinancingTitle": "Financing",
+    "serviceFinancingText": "We'll walk you through the options that fit your situation, no online paperwork.",
+    "serviceAdviceTitle": "Personalized advice",
+    "serviceAdviceText": "We help you choose the right car for your budget, over WhatsApp.",
+    "featuredTitle": "Featured vehicles",
+    "featuredCta": "View the full inventory →",
+    "finalCtaTitle": "Visit us in {{city}}",
+    "finalCtaText": "Message us on WhatsApp to schedule a visit or see a car in person.",
+    "mapLink": "View location on Google Maps"
+  },
+  "financing": {
+    "heroTitle": "Financing",
+    "intro": "We offer financing options to help you drive off in your next car. Every case is different, so we talk it through directly on WhatsApp to tell you what applies to you — there's no online form to fill out.",
+    "processTitle": "How it works",
+    "processText": "Message us on WhatsApp about the car you're interested in. We'll walk you through the requirements, and if you'd like to proceed, we'll set up a time for you to complete the paperwork in person at our location.",
+    "visitTitle": "Where to bring your documents",
+    "mapLink": "View location on Google Maps"
+  },
+  "about": {
+    "heroTitle": "About us",
+    "storyTitle": "Who we are",
+    "storyText": "{{name}} is a used-car dealership in {{city}}, Costa Rica. We work with direct, personal attention to help you find the car you need.",
+    "whyTitle": "Why choose us",
+    "why1Title": "Direct attention",
+    "why1Text": "You talk directly to us on WhatsApp — no middlemen, no call centers.",
+    "why2Title": "Clear pricing",
+    "why2Text": "The price you see on the site is the price, in colones, no surprises.",
+    "why3Title": "Flexible financing",
+    "why3Text": "We talk through financing options based on your particular situation.",
+    "contactTitle": "Contact us"
   },
   "admin": {
     "login": {

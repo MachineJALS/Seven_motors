@@ -1,4 +1,5 @@
 import { useMemo, useState, type ReactNode } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useVehicles } from "@/modules/inventory/presentation/hooks/useVehicles";
 import VehicleCard from "@/modules/inventory/presentation/components/VehicleCard";
@@ -14,7 +15,11 @@ import {
 
 export default function CatalogPage() {
   const { t } = useTranslation();
-  const [filters, setFilters] = useState<VehicleFilters>(emptyFilters);
+  const [searchParams] = useSearchParams();
+  const [filters, setFilters] = useState<VehicleFilters>({
+    ...emptyFilters,
+    query: searchParams.get("q") ?? "",
+  });
   const { vehicles, loading, error } = useVehicles();
 
   const brands = useMemo(() => listBrands(vehicles), [vehicles]);

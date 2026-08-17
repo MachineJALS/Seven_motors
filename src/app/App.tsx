@@ -5,6 +5,9 @@ import Footer from "@/shared/ui/Footer";
 import NotFoundPage from "@/shared/ui/NotFoundPage";
 import CatalogPage from "@/modules/inventory/presentation/pages/CatalogPage";
 import VehicleDetailPage from "@/modules/inventory/presentation/pages/VehicleDetailPage";
+import HomePage from "@/modules/marketing/presentation/pages/HomePage";
+import FinancingPage from "@/modules/marketing/presentation/pages/FinancingPage";
+import AboutPage from "@/modules/marketing/presentation/pages/AboutPage";
 import { AuthProvider } from "@/modules/admin/presentation/AuthContext";
 import ProtectedRoute from "@/modules/admin/presentation/ProtectedRoute";
 import LoginPage from "@/modules/admin/presentation/pages/LoginPage";
@@ -24,8 +27,11 @@ export default function App() {
       <Header />
       <main id="main-content">
         <Routes>
-          <Route path="/" element={<CatalogPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/inventario" element={<CatalogPage />} />
           <Route path="/vehiculo/:id" element={<VehicleDetailPage />} />
+          <Route path="/financiamiento" element={<FinancingPage />} />
+          <Route path="/sobre-nosotros" element={<AboutPage />} />
           <Route path="/admin/login" element={<LoginPage />} />
           <Route
             path="/admin"

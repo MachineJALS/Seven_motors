@@ -1,8 +1,15 @@
 # Sitio web — Agencia de autos (Seven Motor)
 
-Catálogo de vehículos con filtros, ficha por auto, contacto directo por WhatsApp,
-y selector de idioma Español/Inglés. React + Vite + TypeScript. Costo de
-infraestructura: $0.
+Sitio con Home, catálogo de vehículos con filtros y buscador, ficha por auto,
+sección de financiamiento, "Sobre nosotros", contacto directo por WhatsApp
+(con registro de leads), y selector de idioma Español/Inglés. React + Vite +
+TypeScript. Costo de infraestructura: $0.
+
+**Contenido pendiente de tu parte**: la página "Sobre nosotros" tiene texto
+genérico honesto (no inventamos años de fundación, historia ni testimonios
+falsos) — ver [`src/modules/marketing/README.md`](src/modules/marketing/README.md)
+para la lista de qué falta (historia real, fotos del equipo, testimonios,
+mapa embebido de verdad).
 
 **Fuera de alcance por ahora, a propósito**: pasarelas de pago, financiamiento
 y scoring crediticio. La arquitectura está preparada para agregarlos más
@@ -111,8 +118,9 @@ src/
   app/                        entrada (main.tsx) y rutas (App.tsx)
   modules/
     inventory/                 catálogo — domain / application / infrastructure / presentation
-    leads/                      flujo de contacto por WhatsApp
-    admin/                      panel /admin — auth, CRUD de vehículos
+    leads/                      flujo de contacto por WhatsApp + registro de leads
+    admin/                      panel /admin — auth, CRUD de vehículos, ver leads
+    marketing/                  Home, Financiamiento, Sobre Nosotros (páginas de contenido)
     quotes/                     scaffold (Fase 2, aún sin construir)
   shared/
     config/                     datos de la agencia (agency.ts)

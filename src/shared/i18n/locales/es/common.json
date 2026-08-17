@@ -10,6 +10,14 @@
     "cta": "Escribinos",
     "ctaMessage": "Hola, quisiera más información sobre sus vehículos."
   },
+  "nav": {
+    "home": "Inicio",
+    "inventory": "Inventario",
+    "financing": "Financiamiento",
+    "about": "Sobre nosotros",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú"
+  },
   "footer": {
     "rights": "© {{year}} {{name}} · {{city}}",
     "privacyNotice": "Aviso de privacidad"
@@ -21,6 +29,8 @@
     "empty": "No hay vehículos que coincidan con esos filtros."
   },
   "filters": {
+    "query": "Buscar",
+    "queryPlaceholder": "Marca o modelo",
     "brand": "Marca",
     "allBrands": "Todas",
     "maxPrice": "Precio máximo (₡)",
@@ -69,6 +79,46 @@
   "language": {
     "es": "ES",
     "en": "EN"
+  },
+  "home": {
+    "heroTitle": "Autos de confianza en {{city}}",
+    "heroSubtitle": "Revisá el inventario completo, filtrá por lo que buscás y escribinos directo por WhatsApp por el auto que te interese.",
+    "ctaInventory": "Ver inventario",
+    "searchPlaceholder": "Marca, modelo...",
+    "searchButton": "Buscar",
+    "servicesTitle": "Cómo te ayudamos",
+    "serviceSalesTitle": "Venta de vehículos",
+    "serviceSalesText": "Inventario de autos usados revisados, con precios claros en colones.",
+    "serviceFinancingTitle": "Financiamiento",
+    "serviceFinancingText": "Te contamos las opciones disponibles según tu caso, sin trámites en línea.",
+    "serviceAdviceTitle": "Asesoría personalizada",
+    "serviceAdviceText": "Te acompañamos por WhatsApp para elegir el auto que se ajusta a tu presupuesto.",
+    "featuredTitle": "Vehículos destacados",
+    "featuredCta": "Ver todo el inventario →",
+    "finalCtaTitle": "Visitanos en {{city}}",
+    "finalCtaText": "Escribinos por WhatsApp para coordinar una visita o ver un auto en persona.",
+    "mapLink": "Ver ubicación en Google Maps"
+  },
+  "financing": {
+    "heroTitle": "Financiamiento",
+    "intro": "Ofrecemos opciones de financiamiento para que puedas llevarte tu próximo auto. Cada caso es distinto, así que lo conversamos directo por WhatsApp para contarte qué opciones aplican para vos — no hay ningún formulario que llenar en línea.",
+    "processTitle": "¿Cómo funciona?",
+    "processText": "Escribinos por WhatsApp contándonos qué auto te interesa. Te explicamos los requisitos y, si seguís adelante, coordinamos para que completes los trámites en persona en nuestras instalaciones.",
+    "visitTitle": "Dónde entregar tus documentos",
+    "mapLink": "Ver ubicación en Google Maps"
+  },
+  "about": {
+    "heroTitle": "Sobre nosotros",
+    "storyTitle": "Quiénes somos",
+    "storyText": "{{name}} es un concesionario de autos usados en {{city}}, Costa Rica. Trabajamos con atención directa y personalizada para ayudarte a encontrar el auto que necesitás.",
+    "whyTitle": "Por qué elegirnos",
+    "why1Title": "Atención directa",
+    "why1Text": "Hablás directo con nosotros por WhatsApp, sin intermediarios ni call centers.",
+    "why2Title": "Precios claros",
+    "why2Text": "El precio que ves en el sitio es el precio, en colones, sin sorpresas.",
+    "why3Title": "Financiamiento flexible",
+    "why3Text": "Conversamos las opciones de financiamiento según tu situación particular.",
+    "contactTitle": "Contactanos"
   },
   "admin": {
     "login": {
