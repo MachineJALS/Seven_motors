@@ -178,6 +178,7 @@ export default function VehicleForm({ initial, onSubmit }: Props) {
           id="v-photos"
           required
           rows={3}
+          placeholder={"https://...jpg\nhttps://...jpg"}
           value={photos}
           onChange={(e) => setPhotos(e.target.value)}
         />

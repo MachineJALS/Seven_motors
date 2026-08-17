@@ -83,7 +83,6 @@
   "home": {
     "heroTitle": "Trustworthy cars in {{city}}",
     "heroSubtitle": "Browse the full inventory, filter by what you're looking for, and message us directly on WhatsApp about the car you're interested in.",
-    "ctaInventory": "View inventory",
     "searchPlaceholder": "Brand, model...",
     "searchButton": "Search",
     "servicesTitle": "How we help",

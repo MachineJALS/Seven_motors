@@ -32,21 +32,6 @@ export default function HomePage() {
           <h1 className="hero__title">{t("home.heroTitle", { city: AGENCY.city })}</h1>
           <p className="hero__subtitle">{t("home.heroSubtitle")}</p>
 
-          <div className="hero__actions">
-            <Link to="/inventario" className="btn-cta">
-              {t("home.ctaInventory")}
-            </Link>
-            <a
-              className="btn-whatsapp hero__whatsapp"
-              href={buildWhatsAppLink(buildGeneralInquiryMessage(t))}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={handleFinalCta}
-            >
-              {t("header.cta")}
-            </a>
-          </div>
-
           <form className="hero__search" onSubmit={handleSearch} role="search">
             <input
               type="search"

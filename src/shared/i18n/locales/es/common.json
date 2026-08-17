@@ -83,7 +83,6 @@
   "home": {
     "heroTitle": "Autos de confianza en {{city}}",
     "heroSubtitle": "Revisá el inventario completo, filtrá por lo que buscás y escribinos directo por WhatsApp por el auto que te interese.",
-    "ctaInventory": "Ver inventario",
     "searchPlaceholder": "Marca, modelo...",
     "searchButton": "Buscar",
     "servicesTitle": "Cómo te ayudamos",

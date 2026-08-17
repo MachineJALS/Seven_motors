@@ -309,19 +309,6 @@ button:active,
   max-width: 18ch;
 }
 
-.hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.hero__actions .btn-cta,
-.hero__whatsapp {
-  width: auto;
-  padding: 14px 24px;
-}
-
 .hero__search {
   display: flex;
   gap: 8px;
