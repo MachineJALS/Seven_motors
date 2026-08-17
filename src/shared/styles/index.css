@@ -919,6 +919,11 @@ button:active,
   font-size: 13px;
 }
 
+.admin-form__hint {
+  color: var(--color-ink-soft);
+  font-size: 13px;
+}
+
 .admin-form__actions {
   display: flex;
   gap: 10px;
