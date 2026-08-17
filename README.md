@@ -76,10 +76,19 @@ panel todavía). Los precios se cargan en **colones (₡)**, no dólares.
    - **Build output directory:** `dist`
 4. Cloudflare te da un dominio gratis del tipo `tuagencia.pages.dev`, y despliega
    automáticamente cada vez que hacés `git push`.
-5. En **Settings → Environment variables** de Cloudflare Pages, agregá
-   `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` con los mismos valores que
-   tenés en tu `.env.local` — sin esto el sitio publicado no va a poder leer
-   el inventario.
+
+**Sobre las variables de entorno**: si tu proyecto quedó creado en Cloudflare
+como un "Worker" de solo archivos estáticos (no clásico "Pages"), el panel
+de **Settings → Variables** puede bloquearse con el error *"Variables
+cannot be added to a Worker that only has static assets"* — es una
+limitación de Cloudflare, no algo que rompiste. Por eso este repo ya trae
+committeado un archivo **`.env.production`** con `VITE_SUPABASE_URL` y
+`VITE_SUPABASE_ANON_KEY` — Vite los toma automáticamente al hacer
+`npm run build`, sin depender del panel de Cloudflare. Es seguro tenerlos
+en el repo porque la `anon key` está pensada para ser pública (la
+protección real la da Row Level Security en Supabase, no que la clave sea
+secreta). Si alguna vez cambiás de proyecto de Supabase, actualizá ese
+archivo con los valores nuevos.
 
 ## Arquitectura y flujo de trabajo con Claude Code
 
