@@ -58,7 +58,7 @@ export default function LoginPage() {
 
         {error && <p className="admin-form__error">{t("admin.login.error")}</p>}
 
-        <button type="submit" className="btn-whatsapp" disabled={submitting}>
+        <button type="submit" className="btn-cta" disabled={submitting}>
           {submitting ? t("admin.login.submitting") : t("admin.login.submit")}
         </button>
       </form>

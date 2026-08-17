@@ -194,7 +194,7 @@ export default function VehicleForm({ initial, onSubmit }: Props) {
         <button type="button" className="filtro-limpiar" onClick={() => navigate("/admin")}>
           {t("admin.form.cancel")}
         </button>
-        <button type="submit" className="btn-whatsapp" disabled={saving}>
+        <button type="submit" className="btn-cta" disabled={saving}>
           {saving ? t("admin.form.saving") : t("admin.form.save")}
         </button>
       </div>

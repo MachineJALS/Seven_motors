@@ -52,7 +52,7 @@ export default function AdminPage() {
 
       <div className="admin-header">
         <h2>{t("admin.list.title")}</h2>
-        <Link to="/admin/vehicles/new" className="btn-whatsapp admin-add-link">
+        <Link to="/admin/vehicles/new" className="btn-cta admin-add-link">
           {t("admin.list.addVehicle")}
         </Link>
       </div>

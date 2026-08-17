@@ -1,29 +1,30 @@
 /* ─────────────────────────────────────────────────────────────
    TOKENS
-   Minimalist / modern "trust blue" palette — white surfaces, dark
-   slate text, a single blue accent for price/CTAs/links. WhatsApp
-   green stays scoped to the WhatsApp button only (functional, not
-   decorative). One sans-serif family throughout, no display/mono
-   fonts, no rotated/sticker-style elements.
+   "Trusted dealer" palette — white/light-gray surfaces, navy for
+   brand/headings/links, a warm orange reserved for primary calls to
+   action (distinct from the WhatsApp green, which stays scoped to
+   WhatsApp buttons only). Poppins for display/headings, Inter for body.
    ───────────────────────────────────────────────────────────── */
 :root {
   /* Color */
   --color-bg: #ffffff;
-  --color-bg-alt: #f8fafc;
-  --color-ink: #1e293b;
-  --color-ink-soft: #64748b;
-  --color-primary: #2563eb;
-  --color-primary-dark: #1d4ed8;
-  --color-accent: #dbeafe;
-  --color-accent-ink: #1e40af;
+  --color-bg-alt: #f1f5f9;
+  --color-ink: #14213d;
+  --color-ink-soft: #5b6b8c;
+  --color-primary: #14213d;
+  --color-primary-dark: #0b1526;
+  --color-accent: #fde8d8;
+  --color-accent-ink: #9a3412;
+  --color-cta: #ea580c;
+  --color-cta-dark: #c2410c;
   --color-whatsapp: #25d366;
   --color-whatsapp-dark: #1da851;
   --color-line: #e2e8f0;
   --color-danger: #dc2626;
 
   /* Tipografía */
-  --font-body: "Work Sans", system-ui, -apple-system, sans-serif;
-  --font-display: "Outfit", "Work Sans", system-ui, -apple-system, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Poppins", "Inter", system-ui, -apple-system, sans-serif;
 
   /* Layout */
   --radius: 14px;
@@ -206,7 +207,7 @@ button:active,
    HERO / INTRO DE CATÁLOGO
    ───────────────────────────────────────────────────────────── */
 .hero {
-  background: radial-gradient(circle at 85% 0%, rgba(37, 99, 235, 0.08), transparent 55%), var(--color-bg-alt);
+  background: radial-gradient(circle at 85% 0%, rgba(20, 33, 61, 0.08), transparent 55%), var(--color-bg-alt);
   color: var(--color-ink);
   padding: 56px 0 44px;
 }
@@ -402,7 +403,7 @@ button:active,
 .ver-mas {
   font-size: 13px;
   font-weight: 600;
-  color: var(--color-primary);
+  color: var(--color-cta);
 }
 
 .vacio {
@@ -583,6 +584,27 @@ button:active,
   pointer-events: none;
 }
 
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--color-cta);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.btn-cta:hover {
+  background: var(--color-cta-dark);
+}
+
 /* ─────────────────────────────────────────────────────────────
    FOOTER
    ───────────────────────────────────────────────────────────── */
@@ -682,8 +704,11 @@ button:active,
   justify-content: flex-end;
 }
 
-.admin-form__actions .btn-whatsapp {
-  width: auto;
+.admin-form > .btn-cta {
+  width: 100%;
+}
+
+.admin-form__actions .btn-cta {
   padding: 10px 20px;
 }
 
