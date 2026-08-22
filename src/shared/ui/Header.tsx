@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useMatch } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { AGENCY, buildWhatsAppLink } from "@/shared/config/agency";
 import LanguageSwitcher from "@/shared/i18n/LanguageSwitcher";
@@ -11,11 +11,12 @@ export default function Header() {
   const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const message = buildGeneralInquiryMessage(t);
+  const isHome = Boolean(useMatch("/"));
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) => (isActive ? "nav__link nav__link--active" : "nav__link");
 
   return (
-    <header className="header">
+    <header className={isHome ? "header header--dark" : "header"}>
       <div className="wrap header__inner">
         <Link to="/" className="header__brand" onClick={() => setMenuOpen(false)}>
           <span className="header__brand-name">{AGENCY.name}</span>

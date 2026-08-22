@@ -1,8 +1,7 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import type { FuelType, Transmission, Vehicle } from "@/modules/inventory/domain/vehicle";
-import { uploadVehiclePhoto } from "@/modules/admin/application/vehicle-admin";
 
 const FUEL_TYPES: FuelType[] = ["gasoline", "diesel", "hybrid", "electric"];
 const TRANSMISSIONS: Transmission[] = ["automatic", "manual"];
@@ -38,25 +37,6 @@ export default function VehicleForm({ initial, onSubmit }: Props) {
   const [sold, setSold] = useState(initial?.sold ?? false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [uploadError, setUploadError] = useState(false);
-
-  const handleFileSelect = async (e: ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files ?? []);
-    e.target.value = "";
-    if (files.length === 0) return;
-
-    setUploading(true);
-    setUploadError(false);
-    try {
-      const uploadedUrls = await Promise.all(files.map(uploadVehiclePhoto));
-      setPhotos((current) => [current, ...uploadedUrls].filter(Boolean).join("\n"));
-    } catch {
-      setUploadError(true);
-    } finally {
-      setUploading(false);
-    }
-  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -190,20 +170,6 @@ export default function VehicleForm({ initial, onSubmit }: Props) {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
-      </div>
-
-      <div className="filtro-campo">
-        <label htmlFor="v-photo-upload">{t("admin.form.uploadPhotos")}</label>
-        <input
-          id="v-photo-upload"
-          type="file"
-          accept="image/*"
-          multiple
-          disabled={uploading}
-          onChange={handleFileSelect}
-        />
-        {uploading && <span className="admin-form__hint">{t("admin.form.uploading")}</span>}
-        {uploadError && <span className="admin-form__error">{t("admin.form.uploadError")}</span>}
       </div>
 
       <div className="filtro-campo">

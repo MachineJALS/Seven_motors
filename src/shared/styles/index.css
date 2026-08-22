@@ -127,6 +127,51 @@ button:active,
   border-bottom: 1px solid var(--color-line);
 }
 
+.header--dark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: linear-gradient(rgba(9, 14, 26, 0.55), transparent);
+  border-bottom: none;
+  color: #fff;
+}
+
+.header--dark .header__brand,
+.header--dark .header__brand-city {
+  color: #fff;
+}
+
+.header--dark .nav__link {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.header--dark .nav__link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.header--dark .nav__link--active {
+  color: #fff;
+}
+
+.header--dark .nav__toggle {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.header--dark .nav__toggle span {
+  background: #fff;
+}
+
+.header--dark .language-switcher {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.header--dark .language-switcher button {
+  color: rgba(255, 255, 255, 0.85);
+}
+
 .header__inner {
   display: flex;
   flex-wrap: wrap;
@@ -232,6 +277,13 @@ button:active,
     display: flex;
   }
 
+  .header--dark .nav--open {
+    background: rgba(9, 14, 26, 0.92);
+    border-top-color: rgba(255, 255, 255, 0.2);
+    margin: 0 -20px;
+    padding: 10px 20px 16px;
+  }
+
   .nav__link {
     padding: 10px 12px;
   }
@@ -302,11 +354,23 @@ button:active,
 }
 
 .hero--home {
-  padding: 72px 0 56px;
+  position: relative;
+  background: linear-gradient(rgba(9, 14, 26, 0.6), rgba(9, 14, 26, 0.72)), url("/hero-bg.jpg") center/cover
+    no-repeat;
+  color: #fff;
+  padding: 150px 0 90px;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
 }
 
 .hero--home .hero__title {
   max-width: 18ch;
+  color: #fff;
+}
+
+.hero--home .hero__subtitle {
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .hero__search {
@@ -324,6 +388,24 @@ button:active,
   border: 1px solid var(--color-line);
   border-radius: var(--radius-sm);
   background: #fff;
+}
+
+.hero--home .hero__search .filtro-limpiar {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.hero--home .hero__search .filtro-limpiar:hover {
+  border-color: #fff;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 780px) {
+  .hero--home {
+    padding: 120px 0 64px;
+    min-height: 420px;
+  }
 }
 
 .hero__search input:focus {
