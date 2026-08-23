@@ -7,6 +7,7 @@ import {
   updateVehicleImageAltText,
   reorderVehicleImages,
 } from "@/modules/admin/application/vehicle-images-admin";
+import { getSession } from "@/modules/admin/application/auth";
 
 const MAX_FILES = 12;
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -39,6 +40,20 @@ export default function VehicleImageManager({ vehicleId, brand, model, year, col
 
   const handleFiles = async (fileList: FileList | null) => {
     if (!fileList || fileList.length === 0) return;
+
+    const session = await getSession();
+    const expiresAt = session?.expires_at ? new Date(session.expires_at * 1000).toISOString() : null;
+    console.info("[VehicleImageManager] session before upload:", {
+      hasSession: Boolean(session),
+      role: session?.user?.role,
+      expiresAt,
+      expired: session?.expires_at ? session.expires_at * 1000 < Date.now() : null,
+    });
+    if (!session) {
+      reportError("no active session — log in again", null);
+      return;
+    }
+
     const capacity = Math.max(0, MAX_FILES - images.length);
     const candidates = Array.from(fileList).slice(0, capacity);
 
