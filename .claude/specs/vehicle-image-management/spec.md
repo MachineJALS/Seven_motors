@@ -193,3 +193,16 @@ Storage path convention confirmed as implemented:
 `vehicle-photos/<vehicle-id>/<sequence-number>.<ext>`, assigned once at
 upload time. Reordering only ever updates `sort_order` in the DB — it never
 renames the Storage object, keeping reorder a cheap DB-only operation.
+
+**Bug found during first real upload attempt**: uploads failed with "new
+row violates row-level security policy" (no table name in the message —
+the Storage-specific error format, which is how this was traced to Storage
+rather than `vehicle_images`). Root cause: `vehicle-image-repository.ts`
+uploads with `{ upsert: true }` so a retry after a partial failure
+overwrites the leftover object instead of erroring — but when the object
+already exists, Storage performs an `UPDATE`, and `0003_storage_policies.sql`
+only ever had `insert`/`delete` policies for the bucket, no `update`. Fixed
+by adding the missing `update` policy (same file, local-only, not
+committed). Confirmed via the Supabase dashboard's Storage → Policies view
+that `insert`/`delete` were correctly in place beforehand, which is what
+narrowed this down to the missing `update` policy specifically.
