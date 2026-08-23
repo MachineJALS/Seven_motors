@@ -168,13 +168,28 @@
       "transmission": "Transmission",
       "color": "Color",
       "description": "Description",
-      "photos": "Photos (one URL per line)",
+      "photos": "Additional photo URLs (optional, legacy — one per line)",
       "sold": "Sold",
       "save": "Save",
       "cancel": "Cancel",
       "saving": "Saving…",
       "error": "Couldn't save. Please try again.",
       "required": "This field is required."
+    },
+    "images": {
+      "title": "Photos",
+      "dropHint": "Drag images here",
+      "selectFiles": "Select files",
+      "uploading": "Uploading…",
+      "error": "Something went wrong with an image. Check and try again.",
+      "primary": "Primary",
+      "altPlaceholder": "Alt text",
+      "altLabel": "Image alt text",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "makePrimary": "Make primary",
+      "delete": "Delete",
+      "saveFirstHint": "Save the vehicle first — you'll be able to add photos afterward."
     }
   }
 }

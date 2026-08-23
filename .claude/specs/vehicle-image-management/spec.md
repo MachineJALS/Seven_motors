@@ -174,3 +174,22 @@ for Phase 6 (`VehicleCard`/`VehicleDetailPage`) to consume instead of each
 re-implementing the fallback check. Not wired into any component yet —
 confirmed via an unchanged build output hash that it's currently unused/
 tree-shaken, as expected for prep-only work.
+
+**Phase 4**: `admin/infrastructure/vehicle-image-repository.ts`
+(upload/delete/update-alt-text/reorder against Storage + `vehicle_images`)
+and `admin/presentation/components/VehicleImageManager.tsx` (drag-and-drop
++ file-picker upload, preview grid, per-image delete, up/down reorder,
+one-click "make primary", alt-text editing) — embedded in `VehicleForm`
+for edits only. A brand-new vehicle has no stable id until it's saved once,
+so the form now redirects to the edit page right after creating a vehicle
+(`navigate(initial ? "/admin" : /admin/vehicles/${id}/edit)`), where the
+image manager becomes available; the create form shows a hint instead
+(`admin.images.saveFirstHint`). The legacy `photos` textarea lost its
+`required` attribute and got a relabel ("optional, legacy") — it stayed
+required until now, which would have blocked creating a vehicle with no
+photos yet, contradicting the whole point of this feature.
+
+Storage path convention confirmed as implemented:
+`vehicle-photos/<vehicle-id>/<sequence-number>.<ext>`, assigned once at
+upload time. Reordering only ever updates `sort_order` in the DB — it never
+renames the Storage object, keeping reorder a cheap DB-only operation.

@@ -168,13 +168,28 @@
       "transmission": "Transmisión",
       "color": "Color",
       "description": "Descripción",
-      "photos": "Fotos (una URL por línea)",
+      "photos": "URLs de fotos adicionales (opcional, sistema antiguo — una por línea)",
       "sold": "Vendido",
       "save": "Guardar",
       "cancel": "Cancelar",
       "saving": "Guardando…",
       "error": "No se pudo guardar. Intentalo de nuevo.",
       "required": "Este campo es obligatorio."
+    },
+    "images": {
+      "title": "Fotos",
+      "dropHint": "Arrastrá imágenes acá",
+      "selectFiles": "Seleccionar archivos",
+      "uploading": "Subiendo…",
+      "error": "Algo falló con una imagen. Revisá e intentá de nuevo.",
+      "primary": "Principal",
+      "altPlaceholder": "Texto alternativo",
+      "altLabel": "Texto alternativo de la imagen",
+      "moveUp": "Subir",
+      "moveDown": "Bajar",
+      "makePrimary": "Hacer principal",
+      "delete": "Eliminar",
+      "saveFirstHint": "Guardá el vehículo primero — vas a poder agregar fotos después."
     }
   }
 }

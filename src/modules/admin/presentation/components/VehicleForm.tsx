@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import type { FuelType, Transmission, Vehicle } from "@/modules/inventory/domain/vehicle";
+import VehicleImageManager from "@/modules/admin/presentation/components/VehicleImageManager";
 
 const FUEL_TYPES: FuelType[] = ["gasoline", "diesel", "hybrid", "electric"];
 const TRANSMISSIONS: Transmission[] = ["automatic", "manual"];
@@ -66,7 +67,9 @@ export default function VehicleForm({ initial, onSubmit }: Props) {
 
     try {
       await onSubmit(vehicle);
-      navigate("/admin");
+      // A brand-new vehicle has no images yet -- land on its edit page so
+      // the image manager (which needs a stable vehicle id) is right there.
+      navigate(initial ? "/admin" : `/admin/vehicles/${vehicle.id}/edit`);
     } catch {
       setError(true);
     } finally {
@@ -173,11 +176,23 @@ export default function VehicleForm({ initial, onSubmit }: Props) {
         />
       </div>
 
+      {initial ? (
+        <VehicleImageManager
+          vehicleId={initial.id}
+          brand={brand}
+          model={model}
+          year={year}
+          color={color}
+          initialImages={initial.images}
+        />
+      ) : (
+        <p className="admin-form__hint">{t("admin.images.saveFirstHint")}</p>
+      )}
+
       <div className="filtro-campo">
         <label htmlFor="v-photos">{t("admin.form.photos")}</label>
         <textarea
           id="v-photos"
-          required
           rows={3}
           placeholder={"https://...jpg\nhttps://...jpg"}
           value={photos}

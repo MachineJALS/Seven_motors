@@ -7,13 +7,18 @@ down) to create/edit/delete vehicles and toggle sold status, without a code
 change + redeploy per update.
 
 - `application/` — `signIn`/`signOut`/`getSession`, vehicle
-  create/update/delete use-cases (thin re-exports over `infrastructure/`).
+  create/update/delete use-cases, vehicle-image use-cases (thin re-exports
+  over `infrastructure/`).
 - `infrastructure/` — `supabase-auth.ts`, `vehicle-write-repository.ts`
-  (writes to the same `vehicles` table `inventory` reads from).
+  (writes to the same `vehicles` table `inventory` reads from),
+  `vehicle-image-repository.ts` (Storage upload/delete + `vehicle_images`
+  CRUD, see `.claude/specs/vehicle-image-management/spec.md`).
 - `presentation/` — `AuthProvider`/`useAuth`/`ProtectedRoute`, login page,
-  vehicle list page, create/edit form.
+  vehicle list page, create/edit form, `VehicleImageManager` (drag-and-drop
+  upload, preview, delete, reorder, primary image, alt text — embedded in
+  the edit form; a new vehicle must be saved once first, since the image
+  manager needs a stable vehicle id).
 
 Not implemented (see the spec's "Out of scope"): multi-role permissions,
-photo upload to Supabase Storage (photos are pasted URLs), bulk import.
-Payments, financing, and credit-scoring features are **not** planned for
-this module — see `docs/architecture.md`.
+bulk import. Payments, financing, and credit-scoring features are **not**
+planned for this module — see `docs/architecture.md`.
