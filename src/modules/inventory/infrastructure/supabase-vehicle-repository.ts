@@ -1,5 +1,27 @@
 import { supabase } from "@/shared/infrastructure/supabase-client";
-import type { FuelType, Transmission, Vehicle } from "@/modules/inventory/domain/vehicle";
+import type { FuelType, Transmission, Vehicle, VehicleImage } from "@/modules/inventory/domain/vehicle";
+
+const PHOTOS_BUCKET = "vehicle-photos";
+
+export interface VehicleImageRow {
+  id: string;
+  vehicle_id: string;
+  storage_path: string;
+  alt_text: string;
+  sort_order: number;
+}
+
+export function toVehicleImage(row: VehicleImageRow): VehicleImage {
+  const { data } = supabase.storage.from(PHOTOS_BUCKET).getPublicUrl(row.storage_path);
+  return {
+    id: row.id,
+    vehicleId: row.vehicle_id,
+    storagePath: row.storage_path,
+    url: data.publicUrl,
+    altText: row.alt_text,
+    sortOrder: row.sort_order,
+  };
+}
 
 export interface VehicleRow {
   id: string;
@@ -14,6 +36,7 @@ export interface VehicleRow {
   description: string;
   photos: string[];
   sold: boolean;
+  vehicle_images?: VehicleImageRow[];
 }
 
 export function toVehicle(row: VehicleRow): Vehicle {
@@ -28,12 +51,18 @@ export function toVehicle(row: VehicleRow): Vehicle {
     transmission: row.transmission,
     color: row.color,
     description: row.description,
+    images: (row.vehicle_images ?? [])
+      .map(toVehicleImage)
+      .sort((a, b) => a.sortOrder - b.sortOrder),
     photos: row.photos,
     sold: row.sold,
   };
 }
 
-export function toVehicleRow(vehicle: Omit<Vehicle, "sold"> & { sold?: boolean }): Omit<VehicleRow, "sold"> & {
+export function toVehicleRow(vehicle: Omit<Vehicle, "sold" | "images"> & { sold?: boolean }): Omit<
+  VehicleRow,
+  "sold" | "vehicle_images"
+> & {
   sold?: boolean;
 } {
   return {
@@ -52,10 +81,12 @@ export function toVehicleRow(vehicle: Omit<Vehicle, "sold"> & { sold?: boolean }
   };
 }
 
+const VEHICLE_SELECT = "*, vehicle_images(*)";
+
 export async function getVehicles(): Promise<Vehicle[]> {
   const { data, error } = await supabase
     .from("vehicles")
-    .select("*")
+    .select(VEHICLE_SELECT)
     .order("created_at", { ascending: false });
 
   if (error) throw error;
@@ -63,7 +94,7 @@ export async function getVehicles(): Promise<Vehicle[]> {
 }
 
 export async function getVehicleById(id: string): Promise<Vehicle | null> {
-  const { data, error } = await supabase.from("vehicles").select("*").eq("id", id).maybeSingle();
+  const { data, error } = await supabase.from("vehicles").select(VEHICLE_SELECT).eq("id", id).maybeSingle();
 
   if (error) throw error;
   return data ? toVehicle(data as VehicleRow) : null;

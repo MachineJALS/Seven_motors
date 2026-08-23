@@ -59,6 +59,7 @@ export default function VehicleForm({ initial, onSubmit }: Props) {
       transmission,
       color,
       description,
+      images: initial?.images ?? [], // managed via the image manager, see .claude/specs/vehicle-image-management/spec.md
       photos: photoList,
       sold,
     };
