@@ -25,10 +25,17 @@ export default function VehicleImageManager({ vehicleId, brand, model, year, col
   const [images, setImages] = useState<VehicleImage[]>(initialImages);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(false);
+  const [errorDetail, setErrorDetail] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
 
   const suggestedAlt = () => `${brand} ${model} ${year} ${color}`.trim().replace(/\s+/g, " ");
+
+  const reportError = (context: string, reason: unknown) => {
+    console.error(`[VehicleImageManager] ${context}:`, reason);
+    setError(true);
+    setErrorDetail(reason instanceof Error ? reason.message : String(reason));
+  };
 
   const handleFiles = async (fileList: FileList | null) => {
     if (!fileList || fileList.length === 0) return;
@@ -36,7 +43,9 @@ export default function VehicleImageManager({ vehicleId, brand, model, year, col
     const candidates = Array.from(fileList).slice(0, capacity);
 
     const validFiles = candidates.filter((file) => file.type.startsWith("image/") && file.size <= MAX_FILE_SIZE);
-    if (validFiles.length < candidates.length || candidates.length < fileList.length) setError(true);
+    if (validFiles.length < candidates.length || candidates.length < fileList.length) {
+      reportError("some files were skipped (not an image, too large, or over the per-vehicle limit)", null);
+    }
     if (validFiles.length === 0) return;
 
     setUploading(true);
@@ -49,7 +58,8 @@ export default function VehicleImageManager({ vehicleId, brand, model, year, col
     const uploaded = results
       .filter((r): r is PromiseFulfilledResult<VehicleImage> => r.status === "fulfilled")
       .map((r) => r.value);
-    if (uploaded.length < validFiles.length) setError(true);
+    const rejected = results.filter((r): r is PromiseRejectedResult => r.status === "rejected");
+    if (rejected.length > 0) reportError("upload failed", rejected[0].reason);
     setImages((prev) => [...prev, ...uploaded]);
     setUploading(false);
   };
@@ -65,8 +75,8 @@ export default function VehicleImageManager({ vehicleId, brand, model, year, col
     try {
       await deleteVehicleImage(image);
       setImages((prev) => prev.filter((i) => i.id !== image.id));
-    } catch {
-      setError(true);
+    } catch (reason) {
+      reportError("delete failed", reason);
     } finally {
       setBusyId(null);
     }
@@ -76,8 +86,8 @@ export default function VehicleImageManager({ vehicleId, brand, model, year, col
     setImages(reordered);
     try {
       await reorderVehicleImages(reordered);
-    } catch {
-      setError(true);
+    } catch (reason) {
+      reportError("reorder failed", reason);
     }
   };
 
@@ -101,8 +111,8 @@ export default function VehicleImageManager({ vehicleId, brand, model, year, col
     setImages((prev) => prev.map((i) => (i.id === image.id ? { ...i, altText: value } : i)));
     try {
       await updateVehicleImageAltText(image.id, value);
-    } catch {
-      setError(true);
+    } catch (reason) {
+      reportError("alt text update failed", reason);
     }
   };
 
@@ -137,7 +147,12 @@ export default function VehicleImageManager({ vehicleId, brand, model, year, col
       </div>
 
       {uploading && <span className="admin-form__hint">{t("admin.images.uploading")}</span>}
-      {error && <span className="admin-form__error">{t("admin.images.error")}</span>}
+      {error && (
+        <span className="admin-form__error">
+          {t("admin.images.error")}
+          {errorDetail ? ` (${errorDetail})` : ""}
+        </span>
+      )}
 
       {images.length > 0 && (
         <div className="image-manager-grid">
