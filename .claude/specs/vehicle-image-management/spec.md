@@ -156,6 +156,21 @@ re-photographed through the new manager, a follow-up migration can drop
 
 ## Implementation notes
 
-**Phase 1 (this update)**: `supabase/migrations/0004_create_vehicle_images.sql`
-written (local-only, not committed — this repo is public, matching every
-prior migration). No application code changed yet.
+**Phase 1**: `supabase/migrations/0004_create_vehicle_images.sql` written
+(local-only) and run by the project owner — confirmed live via a direct
+query against the project's Supabase instance.
+
+**Phase 2**: `Vehicle.images: VehicleImage[]` added; `photos: string[]`
+unchanged/required, no consumer touched. `supabase-vehicle-repository.ts`
+joins `vehicle_images`, maps + sorts by `sortOrder`, resolves each image's
+public Storage URL. Confirmed live (curl) that the join 400s without the
+Phase 1 migration and 200s with it — deployment order matters and was
+flagged before pushing.
+
+**Phase 3**: added `inventory/application/resolve-vehicle-photos.ts` —
+`resolveVehiclePhotos(vehicle)` implements the fallback strategy (prefer
+`images`, else map legacy `photos` to the same shape) in one place, ready
+for Phase 6 (`VehicleCard`/`VehicleDetailPage`) to consume instead of each
+re-implementing the fallback check. Not wired into any component yet —
+confirmed via an unchanged build output hash that it's currently unused/
+tree-shaken, as expected for prep-only work.
