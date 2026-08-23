@@ -39,44 +39,67 @@ export default function VehicleImageManager({ vehicleId, brand, model, year, col
   };
 
   const handleFiles = async (fileList: FileList | null) => {
-    if (!fileList || fileList.length === 0) return;
-
-    const session = await getSession();
-    const expiresAt = session?.expires_at ? new Date(session.expires_at * 1000).toISOString() : null;
-    console.info("[VehicleImageManager] session before upload:", {
-      hasSession: Boolean(session),
-      role: session?.user?.role,
-      expiresAt,
-      expired: session?.expires_at ? session.expires_at * 1000 < Date.now() : null,
+    console.info("[VehicleImageManager] handleFiles called", {
+      fileCount: fileList?.length ?? 0,
+      currentImages: images.length,
     });
-    if (!session) {
-      reportError("no active session — log in again", null);
+    if (!fileList || fileList.length === 0) {
+      console.info("[VehicleImageManager] no files, bailing out");
       return;
     }
 
-    const capacity = Math.max(0, MAX_FILES - images.length);
-    const candidates = Array.from(fileList).slice(0, capacity);
+    try {
+      const session = await getSession();
+      const expiresAt = session?.expires_at ? new Date(session.expires_at * 1000).toISOString() : null;
+      console.info("[VehicleImageManager] session before upload:", {
+        hasSession: Boolean(session),
+        role: session?.user?.role,
+        expiresAt,
+        expired: session?.expires_at ? session.expires_at * 1000 < Date.now() : null,
+      });
+      if (!session) {
+        reportError("no active session — log in again", null);
+        return;
+      }
 
-    const validFiles = candidates.filter((file) => file.type.startsWith("image/") && file.size <= MAX_FILE_SIZE);
-    if (validFiles.length < candidates.length || candidates.length < fileList.length) {
-      reportError("some files were skipped (not an image, too large, or over the per-vehicle limit)", null);
+      const capacity = Math.max(0, MAX_FILES - images.length);
+      const candidates = Array.from(fileList).slice(0, capacity);
+      const validFiles = candidates.filter((file) => file.type.startsWith("image/") && file.size <= MAX_FILE_SIZE);
+      console.info("[VehicleImageManager] file validation:", {
+        capacity,
+        candidateCount: candidates.length,
+        validCount: validFiles.length,
+        fileDetails: Array.from(fileList).map((f) => ({ name: f.name, type: f.type, size: f.size })),
+      });
+
+      if (validFiles.length < candidates.length || candidates.length < fileList.length) {
+        reportError("some files were skipped (not an image, too large, or over the per-vehicle limit)", null);
+      }
+      if (validFiles.length === 0) {
+        console.info("[VehicleImageManager] no valid files after filtering, bailing out");
+        return;
+      }
+
+      setUploading(true);
+      const startIndex = images.length;
+      console.info("[VehicleImageManager] starting upload of", validFiles.length, "file(s)");
+      const results = await Promise.allSettled(
+        validFiles.map((file, i) =>
+          uploadVehicleImage({ vehicleId, file, sequenceNumber: startIndex + i + 1, altText: suggestedAlt() })
+        )
+      );
+      console.info("[VehicleImageManager] upload results:", results);
+      const uploaded = results
+        .filter((r): r is PromiseFulfilledResult<VehicleImage> => r.status === "fulfilled")
+        .map((r) => r.value);
+      const rejected = results.filter((r): r is PromiseRejectedResult => r.status === "rejected");
+      if (rejected.length > 0) reportError("upload failed", rejected[0].reason);
+      setImages((prev) => [...prev, ...uploaded]);
+      setUploading(false);
+    } catch (reason) {
+      reportError("unexpected error in handleFiles", reason);
+      setUploading(false);
     }
-    if (validFiles.length === 0) return;
-
-    setUploading(true);
-    const startIndex = images.length;
-    const results = await Promise.allSettled(
-      validFiles.map((file, i) =>
-        uploadVehicleImage({ vehicleId, file, sequenceNumber: startIndex + i + 1, altText: suggestedAlt() })
-      )
-    );
-    const uploaded = results
-      .filter((r): r is PromiseFulfilledResult<VehicleImage> => r.status === "fulfilled")
-      .map((r) => r.value);
-    const rejected = results.filter((r): r is PromiseRejectedResult => r.status === "rejected");
-    if (rejected.length > 0) reportError("upload failed", rejected[0].reason);
-    setImages((prev) => [...prev, ...uploaded]);
-    setUploading(false);
   };
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
