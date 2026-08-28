@@ -221,3 +221,43 @@ moments later. Fixed by converting `FileList`/`DataTransfer.files` to a
 plain `File[]` synchronously at the call site (`onChange`/`onDrop`),
 before `handleFiles` ever awaits anything — plain arrays of `File` objects
 aren't tied to the input's live state.
+
+**Third issue, still open**: with both prior bugs fixed, every upload
+still fails with the same "new row violates row-level security policy".
+Ruled out so far, each independently confirmed:
+- Session validity — confirmed authenticated, non-expired, correct `role`
+  claim (checked live via `getSession()` logging and the raw `Authorization`
+  header in the Network tab).
+- Regular database writes (`vehicles` table) succeed with the identical
+  session, proving the JWT is valid and accepted by PostgREST at least.
+- Bucket identity — `select id, name, public from storage.buckets` confirms
+  `vehicle-photos` / `vehicle-photos` / `true`, no casing/naming mismatch.
+- `storage.objects` RLS policies — confirmed via `pg_policies` (not just the
+  dashboard UI) that insert/update/delete are present, scoped to
+  `{authenticated}`, with the exact correct `bucket_id = 'vehicle-photos'`
+  qual/with_check on every one.
+- Added a `storage.buckets` `select` policy for `anon, authenticated` (the
+  dashboard showed zero policies existed on that table) — did not resolve it.
+- The project had rotated its JWT signing key to an asymmetric ECC (P-256)
+  key; suspected a Storage-service incompatibility with the new key format
+  and rolled the "current" signing key back to the legacy HS256 shared
+  secret, confirmed via a fresh login that new tokens are HS256-signed —
+  did not resolve it either. (Kept the rollback since it's harmless and
+  free of downside, just not the actual cause.)
+
+**Still pending**: a direct SQL-level test bypassing the Storage service
+entirely (`begin; set local role authenticated; set local
+"request.jwt.claims" = '{"role":"authenticated"}'; insert into
+storage.objects (bucket_id, name, owner) values ('vehicle-photos',
+'test-diagnostic.txt', null); rollback;`) to determine whether this is a
+genuine RLS/database issue (in which case there's still something
+unexamined at that level) or a Supabase Storage-service-level bug/
+misconfiguration outside of RLS entirely (in which case the next step is a
+Supabase support ticket, since it would be outside what this project's own
+code or database config can fix).
+
+**Interim workaround, available today**: upload photos directly through
+the Supabase dashboard's Storage file browser (any naming convention,
+including the dealer's own), then paste the resulting public URL into the
+legacy `photos` field in the admin vehicle form — that path doesn't depend
+on any of the above and works reliably right now.
