@@ -206,3 +206,18 @@ by adding the missing `update` policy (same file, local-only, not
 committed). Confirmed via the Supabase dashboard's Storage → Policies view
 that `insert`/`delete` were correctly in place beforehand, which is what
 narrowed this down to the missing `update` policy specifically.
+
+**Second bug, found after the first one was fixed**: uploads still did
+nothing — no network request, no error. Root cause was in the app this
+time, introduced by the session-diagnostic logging added while debugging
+the first bug: `handleFiles` awaited `getSession()` before reading the
+selected files, but it received the file input's live `FileList` (not a
+plain array). The `onChange` handler resets `input.value` right after
+calling `handleFiles`, which browsers also use to clear `input.files` —
+so by the time the `await` resumed, the FileList it was still holding a
+reference to had already been emptied out from under it. Confirmed via
+step-by-step console logging: `fileCount: 9` on entry, `candidateCount: 0`
+moments later. Fixed by converting `FileList`/`DataTransfer.files` to a
+plain `File[]` synchronously at the call site (`onChange`/`onDrop`),
+before `handleFiles` ever awaits anything — plain arrays of `File` objects
+aren't tied to the input's live state.

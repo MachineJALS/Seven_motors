@@ -38,12 +38,18 @@ export default function VehicleImageManager({ vehicleId, brand, model, year, col
     setErrorDetail(reason instanceof Error ? reason.message : String(reason));
   };
 
-  const handleFiles = async (fileList: FileList | null) => {
+  // Takes a plain File[], never a live FileList: FileList is tied to the
+  // <input>'s current state, and this function awaits (getSession) before
+  // touching it -- by the time an await resumes, the input's onChange
+  // handler may already have reset `input.value`, which clears the live
+  // FileList out from under us (this was a real bug: files present at
+  // call time became an empty list after the first await).
+  const handleFiles = async (files: File[]) => {
     console.info("[VehicleImageManager] handleFiles called", {
-      fileCount: fileList?.length ?? 0,
+      fileCount: files.length,
       currentImages: images.length,
     });
-    if (!fileList || fileList.length === 0) {
+    if (files.length === 0) {
       console.info("[VehicleImageManager] no files, bailing out");
       return;
     }
@@ -63,16 +69,16 @@ export default function VehicleImageManager({ vehicleId, brand, model, year, col
       }
 
       const capacity = Math.max(0, MAX_FILES - images.length);
-      const candidates = Array.from(fileList).slice(0, capacity);
+      const candidates = files.slice(0, capacity);
       const validFiles = candidates.filter((file) => file.type.startsWith("image/") && file.size <= MAX_FILE_SIZE);
       console.info("[VehicleImageManager] file validation:", {
         capacity,
         candidateCount: candidates.length,
         validCount: validFiles.length,
-        fileDetails: Array.from(fileList).map((f) => ({ name: f.name, type: f.type, size: f.size })),
+        fileDetails: files.map((f) => ({ name: f.name, type: f.type, size: f.size })),
       });
 
-      if (validFiles.length < candidates.length || candidates.length < fileList.length) {
+      if (validFiles.length < candidates.length || candidates.length < files.length) {
         reportError("some files were skipped (not an image, too large, or over the per-vehicle limit)", null);
       }
       if (validFiles.length === 0) {
@@ -105,7 +111,7 @@ export default function VehicleImageManager({ vehicleId, brand, model, year, col
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setDragOver(false);
-    void handleFiles(e.dataTransfer.files);
+    void handleFiles(Array.from(e.dataTransfer.files));
   };
 
   const handleDelete = async (image: VehicleImage) => {
@@ -177,8 +183,9 @@ export default function VehicleImageManager({ vehicleId, brand, model, year, col
             hidden
             disabled={uploading || images.length >= MAX_FILES}
             onChange={(e) => {
-              void handleFiles(e.target.files);
+              const selected = Array.from(e.target.files ?? []);
               e.target.value = "";
+              void handleFiles(selected);
             }}
           />
         </label>
