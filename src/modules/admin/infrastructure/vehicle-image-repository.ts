@@ -12,6 +12,15 @@ const BUCKET = "vehicle-photos";
  * and seeds the initial sort_order. The two are only linked at upload time
  * -- reordering afterward only ever updates sort_order, never renames the
  * Storage object, so reordering stays a cheap DB-only operation.
+ *
+ * upsert: false is deliberate, not the default -- with upsert: true,
+ * Storage issues an INSERT ... ON CONFLICT DO UPDATE, and Postgres RLS
+ * requires the role to satisfy the UPDATE policy too (even when no
+ * conflict actually occurs), which rejected every upload regardless of the
+ * INSERT policy being correct. A plain INSERT only needs the INSERT
+ * policy. Tradeoff: retrying at the same sequenceNumber after a partial
+ * failure now errors ("already exists") instead of silently overwriting --
+ * acceptable, since the admin can just pick the file again.
  */
 export async function uploadVehicleImage(input: {
   vehicleId: string;
@@ -24,7 +33,7 @@ export async function uploadVehicleImage(input: {
 
   const { error: uploadError } = await supabase.storage.from(BUCKET).upload(storagePath, input.file, {
     cacheControl: "3600",
-    upsert: true,
+    upsert: false,
   });
   if (uploadError) throw uploadError;
 

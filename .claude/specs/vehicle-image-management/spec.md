@@ -2,9 +2,14 @@
 
 ## Status
 
-`in-progress` — approved by the project owner after an architecture review
-(see `docs/migration-plan.md` and the conversation that produced this spec).
-Implementing in 7 phases; this file is updated as each phase lands.
+`implemented, pending final live verification` — all 7 phases are coded;
+upload/preview/reorder/alt-text are confirmed working live (real photos
+uploaded successfully), delete and the public-site display (Phase 6) still
+need a live pass. See "Implementation notes" for the full build log,
+including two real bugs found and fixed (a missing Storage `update` RLS
+policy triggered by `upsert: true`, and a `FileList` race condition) plus
+a third that turned out to be the same `upsert: true` behavior surfacing
+differently.
 
 ## Objective
 
@@ -142,17 +147,23 @@ re-photographed through the new manager, a follow-up migration can drop
 
 ## Acceptance criteria
 
-- [ ] `vehicle_images` table exists with the schema above, RLS enabled and
+- [x] `vehicle_images` table exists with the schema above, RLS enabled and
       correct (public read, authenticated write).
-- [ ] Admin can upload, preview, delete, reorder images, and edit alt text
-      for any vehicle, without typing a URL or filename.
-- [ ] Deleting an image removes both the DB row and the Storage object.
-- [ ] `VehicleCard`/`VehicleDetailPage` show the correct primary image /
-      full gallery from the new model, falling back to legacy `photos` for
-      vehicles not yet migrated.
-- [ ] Creating a vehicle survives a failed individual photo upload.
-- [ ] `npm run build` and `npm run lint` pass after every phase.
-- [ ] No regression in catalog, filters, search, WhatsApp leads, or i18n.
+- [x] Admin can upload, preview, reorder, and edit alt text for any
+      vehicle, without typing a URL or filename — confirmed live (9 real
+      photos uploaded to the Toyota Yaris).
+- [ ] Deleting an image removes both the DB row and the Storage object —
+      implemented, not yet exercised live.
+- [x] `VehicleCard`/`VehicleDetailPage` render through
+      `resolveVehiclePhotos()` — wired this pass; not yet confirmed live
+      against the Toyota Yaris that now has real managed images.
+- [ ] Creating a vehicle survives a failed individual photo upload —
+      implemented (vehicle row and image uploads are independent calls),
+      not yet exercised live.
+- [x] `npm run build` and `npm run lint` pass after every phase.
+- [ ] No regression in catalog, filters, search, WhatsApp leads, or i18n —
+      build/lint clean, not yet manually reclicked through by the project
+      owner since Phase 6 landed.
 
 ## Implementation notes
 
@@ -256,8 +267,39 @@ misconfiguration outside of RLS entirely (in which case the next step is a
 Supabase support ticket, since it would be outside what this project's own
 code or database config can fix).
 
-**Interim workaround, available today**: upload photos directly through
-the Supabase dashboard's Storage file browser (any naming convention,
-including the dealer's own), then paste the resulting public URL into the
-legacy `photos` field in the admin vehicle form — that path doesn't depend
-on any of the above and works reliably right now.
+**Third issue, RESOLVED**: the project owner traced it further and found
+it — `uploadVehicleImage` uploaded with `{ upsert: true }`. With
+`upsert: true`, Storage issues an `INSERT ... ON CONFLICT DO UPDATE`
+rather than a plain `INSERT`; Postgres RLS requires the role to satisfy
+the `UPDATE` policy too for that statement shape, even when no conflict
+actually occurs at runtime (the object never existed at any of these
+paths — every prior attempt had failed before creating anything). Changed
+to `upsert: false`, confirmed working end to end: files land in the
+bucket, rows land in `vehicle_images`, and the admin image manager shows
+real photos with working reorder/primary/delete. Tradeoff accepted: a
+retry at the same `sequenceNumber` after a partial failure now errors
+("already exists") instead of silently overwriting — acceptable, the
+admin just re-selects the file.
+
+Cleaned up the verbose diagnostic logging added while chasing this
+(session/step-by-step console output in `VehicleImageManager.tsx`) now
+that the real cause is known — kept the inline error-detail display
+(`errorDetail`), since surfacing the actual error message in the UI is
+good practice regardless, not just a debugging aid for this incident.
+
+**Phase 6 (frontend público) — done**: `VehicleCard` and
+`VehicleDetailPage` now render through `resolveVehiclePhotos(vehicle)`
+(Phase 3's fallback helper) instead of reading `vehicle.photos[0]` /
+`vehicle.photos` directly — the public catalog, a vehicle's detail page
+gallery, and `HomePage`'s featured-vehicles section (which just reuses
+`VehicleCard`) all show the managed `vehicle_images` now when present,
+falling back to the legacy URLs for any vehicle not yet re-photographed
+through the admin image manager.
+
+All 7 phases are implemented; upload/reorder/alt-text are confirmed
+working live, delete and the public-frontend wiring (Phase 6) are
+implemented but still need a live pass (see unchecked boxes above).
+Remaining follow-ups are explicitly out of scope per this spec (see "Out
+of scope"): dropping the legacy `photos` column once every real vehicle
+has managed images, and any image compression/format-conversion
+enhancement.

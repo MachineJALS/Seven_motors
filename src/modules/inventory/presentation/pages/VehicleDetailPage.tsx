@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useVehicle } from "@/modules/inventory/presentation/hooks/useVehicle";
+import { resolveVehiclePhotos } from "@/modules/inventory/application/resolve-vehicle-photos";
 import PriceTag from "@/modules/inventory/presentation/components/PriceTag";
 import WhatsAppButton from "@/modules/leads/presentation/components/WhatsAppButton";
 import { buildVehicleInquiryMessage } from "@/modules/leads/application/build-whatsapp-inquiry";
@@ -37,6 +38,8 @@ export default function VehicleDetailPage() {
     );
   }
 
+  const photos = resolveVehiclePhotos(vehicle);
+
   return (
     <div className="wrap">
       <Link to="/" className="ficha-volver">
@@ -46,18 +49,18 @@ export default function VehicleDetailPage() {
       <div className="ficha">
         <div>
           <div className="ficha__foto-principal">
-            <img src={vehicle.photos[activePhoto]} alt={`${vehicle.brand} ${vehicle.model}`} />
+            <img src={photos[activePhoto]?.url} alt={photos[activePhoto]?.alt ?? `${vehicle.brand} ${vehicle.model}`} />
           </div>
-          {vehicle.photos.length > 1 && (
+          {photos.length > 1 && (
             <div className="ficha__miniaturas">
-              {vehicle.photos.map((photo, i) => (
+              {photos.map((photo, i) => (
                 <button
-                  key={photo}
+                  key={photo.url}
                   className={i === activePhoto ? "activa" : ""}
                   onClick={() => setActivePhoto(i)}
                   aria-label={`${i + 1}`}
                 >
-                  <img src={photo} alt="" />
+                  <img src={photo.url} alt="" />
                 </button>
               ))}
             </div>
